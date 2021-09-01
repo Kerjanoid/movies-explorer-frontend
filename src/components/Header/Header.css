@@ -68,7 +68,7 @@
   text-decoration: none;
   color: #fff;
   font-style: normal;
-  font-weight: 500;
+  font-weight: 400;
   font-size: 12px;
   line-height: 16px;
 }
@@ -76,6 +76,10 @@
 .header__link_logged-in {
   font-size: 13px;
   line-height: 18px;
+}
+
+.header__link_active {
+  font-weight: 500;
 }
 
 .header__link_entry-button {

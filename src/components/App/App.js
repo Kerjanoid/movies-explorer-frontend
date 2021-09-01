@@ -11,13 +11,13 @@ function App() {
         <Route exact path="/">
           <Main loggedIn={loggedIn} />
         </Route>
-        {/* <Route path="/signin">
-
-          </Route>
-          <Route path="/signup">
-
-          </Route>
-          <Route path="/profile">
+        <Route path="/movies">
+          <Main loggedIn={loggedIn} />
+        </Route>
+        <Route path="/saved-movies">
+          <Main loggedIn={loggedIn} />
+        </Route>
+        {/* <Route path="/profile">
 
           </Route>
           <Route path="/movies">

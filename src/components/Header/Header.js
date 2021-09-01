@@ -1,5 +1,5 @@
 import "./Header.css";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 function Header({ loggedIn }) {
   return (
@@ -10,47 +10,49 @@ function Header({ loggedIn }) {
           <nav className="header__navigation header__navigation_logged-in">
             <ul className="header__links header__links_logged-in">
               <li className="header__li header__li_logged-in">
-                <Link
+                <NavLink
                   to="/movies"
                   className="header__link header__link_logged-in"
-                >
+                  activeClassName="header__link_active">
                   Фильмы
-                </Link>
+                </NavLink>
               </li>
               <li className="header__li header__li_logged-in">
-                <Link
+                <NavLink
                   to="/saved-movies"
-                  className="header__link header__link_logged-in font-weight-400"
-                >
+                  className="header__link header__link_logged-in"
+                  activeClassName="header__link_active">
                   Сохраненные фильмы
-                </Link>
+                </NavLink>
               </li>
               <li className="header__li header__li_logged-in header__li_account-button">
-                <Link
+                <NavLink
                   to="/profile"
                   className="header__link header__link_logged-in header__link_account-button"
-                >
+                  activeClassName="header__link_active">
                   Аккаунт
-                </Link>
+                </NavLink>
               </li>
-              {/* разобраться со шрифтами, переместить кнопку "Аккаунт" вконец */}
             </ul>
           </nav>
         ) : (
           <nav className="header__navigation">
             <ul className="header__links">
               <li className="header__li">
-                <Link to="/signup" className="header__link">
+                <NavLink
+                  to="/signup"
+                  className="header__link"
+                  activeClassName="header__link_active">
                   Регистрация
-                </Link>
+                </NavLink>
               </li>
               <li className="header__li">
-                <Link
+                <NavLink
                   to="/signin"
                   className="header__link header__link_entry-button"
-                >
+                  activeClassName="header__link_active">
                   Войти
-                </Link>
+                </NavLink>
               </li>
             </ul>
           </nav>
