@@ -1,0 +1,32 @@
+.navtab {
+  margin: 151px 0 0 0;
+  display: flex;
+}
+
+.navtab__lu {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.navtab__li {
+  display: flex;
+}
+
+.navtab__link {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: #fff;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 16px;
+  background: #303030;
+  border-radius: 10px;
+  width: 96px;
+  height: 36px;
+}
