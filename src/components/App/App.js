@@ -1,6 +1,7 @@
 import "./App.css";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import Main from "../Main/Main";
+import NotFound from "../NotFound/NotFound";
 
 function App() {
   const loggedIn = true; /* изменить состояние true/false, для изменения внешнего вида header */
@@ -27,7 +28,7 @@ function App() {
 
           </Route> */}
         <Route path="*">
-          <Redirect to="/" />
+          <NotFound />
         </Route>
       </Switch>
     </div>
