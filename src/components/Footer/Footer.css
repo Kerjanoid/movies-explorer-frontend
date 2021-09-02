@@ -1,38 +1,70 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.footer {
+  margin: 0;
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-self: stretch;
+  max-width: 1140px;
+  padding: 0 70px;
+  height: 172px;
 }
 
-.App-link {
-  color: #61dafb;
+.footer__title {
+  display: flex;
+  margin: 0 0 20px 0;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+  text-align: center;
+  color: #8B8B8B;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.footer__links-bar {
+  margin: 0;
+  display: flex;
+  align-self: stretch;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #424242;
+  height: 56px;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+}
+
+.footer__copyright {
+  display: flex;
+  margin: 0;
+}
+
+.footer__navtab {
+  display: flex;
+  margin: 0;
+}
+
+.footer__links {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  column-gap: 20px;
+  margin: 0;
+  padding: 0;
+}
+
+.footer__links-item {
+  display: flex;
+  margin: 0;
+}
+
+.footer__link {
+  display: flex;
+  margin: 0;
+  color: #FFFFFF;
+  text-decoration: none;
+  transition: linear .3s;
+}
+
+.footer__link:hover {
+  opacity: .7;
 }

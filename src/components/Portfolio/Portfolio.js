@@ -1,25 +1,31 @@
-import logo from '../../logo.svg';
-import './App.css';
+import './Portfolio.css';
 
-function App() {
+function Portfolio() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <section className="portfolio">
+      <h2 className="portfolio__title">Портфолио</h2>
+      <ul className="portfolio__list">
+        <li className="portfolio__item">
+          <a href="https://kerjanoid.github.io/how-to-learn/" className="portfolio__link" target="_blank" rel="noopener noreferrer">
+            <p className="portfolio__link-text">Статичный сайт</p>
+            <p className="portfolio__link-text">&#8599;</p>
+          </a>
+        </li>
+        <li className="portfolio__item">
+          <a href="https://kerjanoid.github.io/russian-travel/" className="portfolio__link" target="_blank" rel="noopener noreferrer">
+            <p className="portfolio__link-text">Адаптивный сайт</p>
+            <p className="portfolio__link-text">&#8599;</p>
+          </a>
+        </li>
+        <li className="portfolio__item">
+          <a href="https://express-mesto.kerjanoid.nomoredomains.club/" className="portfolio__link" target="_blank" rel="noopener noreferrer">
+            <p className="portfolio__link-text">Одностраничное приложение</p>
+            <p className="portfolio__link-text">&#8599;</p>
+          </a>
+        </li>
+      </ul>
+    </section>
   );
 }
 
-export default App;
+export default Portfolio;
