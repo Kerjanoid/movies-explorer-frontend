@@ -1,37 +1,40 @@
-.navtab {
-  margin: 151px 0 0 0;
-  display: flex;
-}
-
-.navtab__lu {
-  margin: 0;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-}
-
-.navtab__li {
-  display: flex;
-}
-
-.navtab__link {
+.not-found {
   margin: 0;
   display: flex;
+  flex-direction: column;
+  justify-self: stretch;
+  justify-content: flex-start;
   align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  color: #fff;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  line-height: 16px;
-  background: #303030;
-  border-radius: 10px;
-  width: 96px;
-  height: 36px;
-  transition: linear .3s;
+  font-weight: 400;
 }
 
-.navtab__link:hover {
-  opacity: .8;
+.not-found__titel {
+  margin: 246px 0 0 0;
+  display: flex;
+  font-weight: 400;
+  font-size: 140px;
+  line-height: 169px;
+  text-align: center;
+}
+
+.not-found__message {
+  margin: 5px 0 0 0;
+  display: flex;
+  font-size: 16px;
+  line-height: 19px;
+  text-align: center;
+}
+
+.not-found__link {
+  margin: 184px 0 0 0;
+  display: flex;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #4285F4;
+  text-decoration: none;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  background-color: inherit;
 }

@@ -7,7 +7,6 @@ function App() {
   const loggedIn = true; /* изменить состояние true/false, для изменения внешнего вида header */
 
   return (
-    <div className="page">
       <Switch>
         <Route exact path="/">
           <Main loggedIn={loggedIn} />
@@ -31,7 +30,6 @@ function App() {
           <NotFound />
         </Route>
       </Switch>
-    </div>
   );
 }
 

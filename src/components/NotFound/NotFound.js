@@ -1,5 +1,5 @@
 import './NotFound.css';
-import { useHistory, Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 function NotFound() {
   let history = useHistory();
@@ -7,10 +7,10 @@ function NotFound() {
   return (
     <main className="not-found">
       <h1 className="not-found__titel">404</h1>
-      <p1 className="not-found__subtitel">Страница не найдена</p1>
-      <Link onClick={history.goBack} className="header__link header__link_logged-in">
+      <p className="not-found__message">Страница не найдена</p>
+      <button onClick={history.goBack} className="not-found__link">
         Назад
-      </Link>
+      </button>
     </main>
   );
 }
