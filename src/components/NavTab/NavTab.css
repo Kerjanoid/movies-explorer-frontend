@@ -1,13 +1,16 @@
 .navtab {
   margin: 151px 0 0 0;
   display: flex;
+  transition: .4s;
 }
 
-.navtab__lu {
+.navtab__ul {
   margin: 0;
+  padding: 0;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
+  transition: .4s;
 }
 
 .navtab__li {
@@ -22,7 +25,7 @@
   text-decoration: none;
   color: #fff;
   font-style: normal;
-  font-weight: normal;
+  font-weight: 500;
   font-size: 12px;
   line-height: 16px;
   background: #303030;
@@ -34,4 +37,28 @@
 
 .navtab__link:hover {
   opacity: .8;
+}
+
+@media screen and (max-width: 868px) {
+  .navtab {
+    margin: 314px 0 0 0;
+  }
+}
+
+@media screen and (max-width: 630px) {
+  .navtab {
+    margin: 212px 0 0 0;
+  }
+
+  .navtab__ul {
+    gap: 6px;
+  }
+
+  .navtab__link {
+    font-size: 10px;
+    line-height: 16px;
+    border-radius: 6px;
+    width: 82px;
+    height: 26px;
+  }
 }
