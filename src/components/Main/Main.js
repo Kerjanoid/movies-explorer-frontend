@@ -6,11 +6,14 @@ import Techs from "../Techs/Techs";
 import AboutMe from "../AboutMe/AboutMe";
 import Portfolio from "../Portfolio/Portfolio";
 import Footer from "../Footer/Footer";
+import SideBar from "../SideBar/SideBar";
 
-function Main({ loggedIn }) {
+function Main({ loggedIn, isSideBarOpened, handleSideBarState }) {
   return (
     <>
-      <Header loggedIn={loggedIn} />
+      <Header loggedIn={loggedIn}
+        isSideBarOpened={isSideBarOpened}
+        handleSideBarState={handleSideBarState} />
       <main className="content">
         <Promo />
         <AboutProject />
@@ -19,6 +22,7 @@ function Main({ loggedIn }) {
         <Portfolio />
       </main>
       <Footer />
+      <SideBar />
     </>
   );
 }
