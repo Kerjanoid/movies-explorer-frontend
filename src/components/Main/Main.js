@@ -22,7 +22,8 @@ function Main({ loggedIn, isSideBarOpened, handleSideBarState }) {
         <Portfolio />
       </main>
       <Footer />
-      <SideBar />
+      <SideBar isSideBarOpened={isSideBarOpened}
+        handleSideBarState={handleSideBarState}/>
     </>
   );
 }

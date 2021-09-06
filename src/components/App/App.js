@@ -9,7 +9,7 @@ function App() {
   const [isSideBarOpened, setIsSideBarOpened] = useState(false);
 
   const handleSideBarState = () => {
-    setIsSideBarOpened(true)
+    setIsSideBarOpened(!isSideBarOpened)
   }
 
   return (
