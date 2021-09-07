@@ -1,25 +1,25 @@
-import logo from '../../logo.svg';
-import './App.css';
+import "./Movies.css";
+import Header from "../Header/Header";
+import SearchForm from "../SearchForm/SearchForm"
+import MoviesCardList from "../MoviesCardList/MoviesCardList"
+import Footer from "../Footer/Footer";
+import SideBar from "../SideBar/SideBar";
 
-function App() {
+function Movies({ loggedIn, isSideBarOpened, handleSideBarState }) {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Header loggedIn={loggedIn}
+        isSideBarOpened={isSideBarOpened}
+        handleSideBarState={handleSideBarState} />
+      <main className="content">
+        <SearchForm />
+        <MoviesCardList />
+      </main>
+      <Footer />
+      <SideBar isSideBarOpened={isSideBarOpened}
+        handleSideBarState={handleSideBarState}/>
+    </>
   );
 }
 
-export default App;
+export default Movies;

@@ -6,6 +6,7 @@
   justify-content: flex-end;
   align-items: center;
   width: 100%;
+  max-width: 1280px;
   padding: 0 70px;
   height: 172px;
   transition: .4s;

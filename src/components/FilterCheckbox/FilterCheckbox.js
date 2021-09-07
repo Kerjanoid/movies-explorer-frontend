@@ -1,25 +1,19 @@
-import logo from '../../logo.svg';
-import './App.css';
+import './FilterCheckbox.css';
 
-function App() {
+function FilterCheckbox() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <form className="checkbox">
+      <label className="checkbox__form-label" htmlFor="short-film">
+        <input
+          className="checkbox__input checkbox__input_hidden"
+          name="short-film"
+          type="checkbox"
+          id="short-film" />
+        <span className="checkbox__input checkbox__input_visible" />
+        <span className="checkbox__form-text">Короткометражки</span>
+      </label>
+    </form>
   );
 }
 
-export default App;
+export default FilterCheckbox;

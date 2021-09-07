@@ -2,6 +2,7 @@ import "./App.css";
 import { Switch, Route } from "react-router-dom";
 import { useState } from "react"
 import Main from "../Main/Main";
+import Movies from "../Movies/Movies"
 import NotFound from "../NotFound/NotFound";
 
 function App() {
@@ -20,7 +21,7 @@ function App() {
           handleSideBarState={handleSideBarState} />
         </Route>
         <Route path="/movies">
-          <Main loggedIn={loggedIn}
+          <Movies loggedIn={loggedIn}
           isSideBarOpened={isSideBarOpened}
           handleSideBarState={handleSideBarState} />
         </Route>
