@@ -2,11 +2,13 @@ import "./App.css";
 import { Switch, Route } from "react-router-dom";
 import { useState } from "react"
 import Main from "../Main/Main";
-import Movies from "../Movies/Movies"
+import Movies from "../Movies/Movies";
+import SavedMovies from "../SavedMovies/SavedMovies"
+import Register from "../Register/Register"
 import NotFound from "../NotFound/NotFound";
 
 function App() {
-  const loggedIn = true; /* изменить состояние true/false, для изменения внешнего вида header */
+  const loggedIn = false; /* изменить состояние true/false, для изменения внешнего вида header */
   const [isSideBarOpened, setIsSideBarOpened] = useState(false);
 
   const handleSideBarState = () => {
@@ -26,19 +28,16 @@ function App() {
           handleSideBarState={handleSideBarState} />
         </Route>
         <Route path="/saved-movies">
-          <Main loggedIn={loggedIn}
+          <SavedMovies loggedIn={loggedIn}
           isSideBarOpened={isSideBarOpened}
           handleSideBarState={handleSideBarState} />
         </Route>
+        <Route path="/signup">
+          <Register loggedIn={loggedIn} />
+        </Route>
         {/* <Route path="/profile">
-
           </Route>
-          <Route path="/movies">
-
-          </Route>
-          <Route path="/saved-movies">
-
-          </Route> */}
+           */}
         <Route path="*">
           <NotFound />
         </Route>

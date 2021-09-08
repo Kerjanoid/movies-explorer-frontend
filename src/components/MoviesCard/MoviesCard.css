@@ -55,6 +55,22 @@
   opacity: 0.8;
 }
 
+.card__delete-button {
+  margin: 10px 0 25px 0;
+  cursor: pointer;
+  display: flex;
+  padding: 0;
+  border: none;
+  width: 24px;
+  height: 24px;
+  background: url("../../images/delete.svg");
+  transition: .4s;
+}
+
+.card__delete-button:hover {
+  opacity: 0.8;
+}
+
 .card__duration {
   display: flex;
   margin: 0;

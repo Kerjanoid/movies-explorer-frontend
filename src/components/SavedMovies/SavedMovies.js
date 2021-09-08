@@ -1,12 +1,11 @@
-import "./Movies.css";
+import "./SavedMovies.css";
 import Header from "../Header/Header";
 import SearchForm from "../SearchForm/SearchForm"
-import Preloader from "../Preloader/Preloader"
 import MoviesCardList from "../MoviesCardList/MoviesCardList"
 import Footer from "../Footer/Footer";
 import SideBar from "../SideBar/SideBar";
 
-function Movies({ loggedIn, isSideBarOpened, handleSideBarState, isLiked, handleLikeClick }) {
+function SavedMovies({ loggedIn, isSideBarOpened, handleSideBarState, isLiked, handleLikeClick }) {
   return (
     <>
       <Header loggedIn={loggedIn}
@@ -16,8 +15,7 @@ function Movies({ loggedIn, isSideBarOpened, handleSideBarState, isLiked, handle
         <SearchForm />
         {/* <Preloader /> */}
       {/* Preloader будет вставляться вместо <MoviesCardList/> при выполнении поиска */}
-        <MoviesCardList isLiked={isLiked}
-        handleLikeClick={handleLikeClick}/>
+        <MoviesCardList />
       </main>
       <Footer />
       <SideBar isSideBarOpened={isSideBarOpened}
@@ -26,4 +24,4 @@ function Movies({ loggedIn, isSideBarOpened, handleSideBarState, isLiked, handle
   );
 }
 
-export default Movies;
+export default SavedMovies;
