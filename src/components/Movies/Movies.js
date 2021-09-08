@@ -5,7 +5,7 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList"
 import Footer from "../Footer/Footer";
 import SideBar from "../SideBar/SideBar";
 
-function Movies({ loggedIn, isSideBarOpened, handleSideBarState }) {
+function Movies({ loggedIn, isSideBarOpened, handleSideBarState, isLiked, handleLikeClick }) {
   return (
     <>
       <Header loggedIn={loggedIn}
@@ -13,7 +13,8 @@ function Movies({ loggedIn, isSideBarOpened, handleSideBarState }) {
         handleSideBarState={handleSideBarState} />
       <main className="content">
         <SearchForm />
-        <MoviesCardList />
+        <MoviesCardList isLiked={isLiked}
+        handleLikeClick={handleLikeClick}/>
       </main>
       <Footer />
       <SideBar isSideBarOpened={isSideBarOpened}

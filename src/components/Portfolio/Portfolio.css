@@ -62,7 +62,7 @@
   transition: .4s;
 }
 
-@media screen and (max-width: 868px) {
+@media screen and (max-width: 885px) {
   .portfolio__title {
     color: #A0A0A0;
   }
@@ -80,7 +80,7 @@
   }
 }
 
-@media screen and (max-width: 560px) {
+@media screen and (max-width: 577px) {
   .portfolio {
     padding: 0 14px 50px;
   }

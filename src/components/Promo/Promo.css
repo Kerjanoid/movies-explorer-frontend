@@ -32,7 +32,7 @@
   transition: .4s;
 }
 
-@media screen and (max-width: 868px) {
+@media screen and (max-width: 885px) {
   .promo {
     padding: 20px 20px 0;
   }
@@ -47,7 +47,7 @@
   }
 }
 
-@media screen and (max-width: 630px) {
+@media screen and (max-width: 647px) {
   .promo {
     padding: 14px 14px 0;
   }

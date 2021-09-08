@@ -3,7 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 
 function Header({ loggedIn, isSideBarOpened, handleSideBarState }) {
-  const isSmallScreen = useMediaQuery({ query: "(max-width: 768px)" });
+  const isSmallScreen = useMediaQuery({ query: "(max-width: 785px)" });
 
   return (
     <header className="header">

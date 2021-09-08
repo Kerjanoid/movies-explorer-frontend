@@ -137,7 +137,7 @@
   opacity: .8;
 }
 
-@media screen and (max-width: 630px) {
+@media screen and (max-width: 647px) {
   .header {
     padding: 0 14px;
   }

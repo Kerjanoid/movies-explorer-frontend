@@ -102,7 +102,7 @@
   transition: .4s;
 }
 
-@media screen and (max-width: 868px) {
+@media screen and (max-width: 885px) {
   .about-me {
     padding: 90px 50px;
   }
@@ -134,19 +134,19 @@
   }
 }
 
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 767px) {
   .about-me__photo {
     margin: 0 0 0 10px;
   }
 }
 
-@media screen and (max-width: 630px) {
+@media screen and (max-width: 647px) {
   .about-me {
     padding: 70px 14px 69px;
   }
 }
 
-@media screen and (max-width: 560px) {
+@media screen and (max-width: 577px) {
   .about-me__title-container {
     padding: 0 0 28px 0;
   }

@@ -84,7 +84,7 @@
   transition: .4s;
 }
 
-@media screen and (max-width: 868px) {
+@media screen and (max-width: 885px) {
   .techs {
     padding: 90px 50px;
   }
@@ -114,14 +114,14 @@
   }
 }
 
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 777px) {
   .techs__list {
     margin: 50px 0 0 0;
     grid-template-columns: repeat(4, auto);
   }
 }
 
-@media screen and (max-width: 560px) {
+@media screen and (max-width: 577px) {
   .techs {
     padding: 70px 18px;
   }
@@ -150,7 +150,7 @@
   }
 }
 
-@media screen and (max-width: 410px) {
+@media screen and (max-width: 427px) {
   .techs__list {
     grid-template-columns: repeat(2, auto);
   }

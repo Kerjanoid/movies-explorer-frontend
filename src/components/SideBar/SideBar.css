@@ -121,7 +121,7 @@
   opacity: 0.8;
 }
 
-@media screen and (max-width: 630px) {
+@media screen and (max-width: 647px) {
   .sidebar__close-button {
     top: 13.44px;
     right: 13.44px;
