@@ -6,9 +6,11 @@ import Movies from "../Movies/Movies";
 import SavedMovies from "../SavedMovies/SavedMovies"
 import Register from "../Register/Register"
 import NotFound from "../NotFound/NotFound";
+import Login from "../Login/Login";
+import Profile from "../Profile/Profile"
 
 function App() {
-  const loggedIn = false; /* изменить состояние true/false, для изменения внешнего вида header */
+  const loggedIn = true; /* изменить состояние true/false, для изменения внешнего вида header */
   const [isSideBarOpened, setIsSideBarOpened] = useState(false);
 
   const handleSideBarState = () => {
@@ -22,22 +24,27 @@ function App() {
           isSideBarOpened={isSideBarOpened}
           handleSideBarState={handleSideBarState} />
         </Route>
-        <Route path="/movies">
+        <Route exact path="/movies">
           <Movies loggedIn={loggedIn}
           isSideBarOpened={isSideBarOpened}
           handleSideBarState={handleSideBarState} />
         </Route>
-        <Route path="/saved-movies">
+        <Route exact path="/saved-movies">
           <SavedMovies loggedIn={loggedIn}
           isSideBarOpened={isSideBarOpened}
           handleSideBarState={handleSideBarState} />
         </Route>
-        <Route path="/signup">
-          <Register loggedIn={loggedIn} />
+        <Route exact path="/signup">
+          <Register />
         </Route>
-        {/* <Route path="/profile">
-          </Route>
-           */}
+        <Route exact path="/signin">
+          <Login />
+        </Route>
+        <Route exact path="/profile">
+          <Profile loggedIn={loggedIn}
+          isSideBarOpened={isSideBarOpened}
+          handleSideBarState={handleSideBarState} />
+        </Route>
         <Route path="*">
           <NotFound />
         </Route>

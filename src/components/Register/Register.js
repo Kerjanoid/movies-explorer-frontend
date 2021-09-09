@@ -13,22 +13,25 @@ function Register() {
           <label className="register__input">Имя
             <input type="text" name="name" id="name"
                 className="register__textfield" placeholder="Введите имя"
-                required  />
+                required autoComplete="off" />
+            <span className="register__error" id="name-error">Что-то пошло не так...</span>
           </label>
           <label className="register__input">E-mail
             <input type="email" name="email" id="email"
-                className="register__textfield" placeholder="Введите email"
-                required  />
+                className="register__textfield register__textfield_error" placeholder="Введите email"
+                required autoComplete="off" />
+            <span className="register__error register__error_visible" id="email-error">Что-то пошло не так...</span>
           </label>
           <label className="register__input">Пароль
             <input type="password" name="password" id="password"
                 className="register__textfield" placeholder="Введите пароль"
-                required  />
+                required autoComplete="off" />
+            <span className="register__error" id="password-error">Что-то пошло не так...</span>
           </label>
         </div>
         <div className="register__wrapper">
           <button className="register__button" type="submit">Зарегистрироваться</button>
-          <p className="register__text">Уже зарегистрированы? <Link className="register__link" to="/signin">Войти</Link></p>
+          <p className="register__text">Уже зарегистрированы?<Link className="register__link" to="/signin">Войти</Link></p>
         </div>
       </form>
     </section>
