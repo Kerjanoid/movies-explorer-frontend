@@ -70,6 +70,10 @@
   color: #FFFFFF;
 }
 
+.profile__textfield:focus {
+  font-weight: 500;
+}
+
 .profile__button-wrapper {
   display: flex;
   flex-direction: column;
