@@ -6,7 +6,7 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList"
 import Footer from "../Footer/Footer";
 import SideBar from "../SideBar/SideBar";
 
-function Movies({ loggedIn, isSideBarOpened, handleSideBarState, isLiked, handleLikeClick }) {
+function Movies({ loggedIn, isSideBarOpened, handleSideBarState, isLiked, handleLikeClick, movies }) {
   return (
     <>
       <Header loggedIn={loggedIn}
@@ -17,7 +17,8 @@ function Movies({ loggedIn, isSideBarOpened, handleSideBarState, isLiked, handle
         {/* <Preloader /> */}
       {/* Preloader будет вставляться вместо <MoviesCardList/> при выполнении поиска */}
         <MoviesCardList isLiked={isLiked}
-        handleLikeClick={handleLikeClick}/>
+        handleLikeClick={handleLikeClick}
+        movies={movies} />
       </main>
       <Footer />
       <SideBar isSideBarOpened={isSideBarOpened}
