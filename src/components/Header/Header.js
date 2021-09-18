@@ -1,9 +1,7 @@
 import "./Header.css";
 import { Link, NavLink } from "react-router-dom";
-import { useMediaQuery } from "react-responsive";
 
-function Header({ loggedIn, isSideBarOpened, handleSideBarState }) {
-  const isSmallScreen = useMediaQuery({ query: "(max-width: 785px)" });
+function Header({ loggedIn, isSideBarOpened, handleSideBarState, screenWidth }) {
 
   return (
     <header className="header">
@@ -15,7 +13,7 @@ function Header({ loggedIn, isSideBarOpened, handleSideBarState }) {
               <></>
             ) : (
               <>
-                {isSmallScreen ? (
+                {(screenWidth < 800) ? (
                   <button className="header__sidebar-button" onClick={handleSideBarState} />
                 ) : (
                   <nav className="header__navigation header__navigation_logged-in">

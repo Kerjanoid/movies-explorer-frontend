@@ -1,5 +1,4 @@
 import './MoviesCard.css';
-import pic1 from "../../images/pic__COLOR_pic.jpg";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 
@@ -15,6 +14,8 @@ function MoviesCard({movie}) {
     window.open(`${movie.trailerLink}`, 'trailer');
   }
 
+  const timeCalculating = `${Math.floor(movie.duration/60)}ч ${movie.duration%60}м`
+
   return (
     <div className="card">
       <img className="card__picture"
@@ -28,7 +29,7 @@ function MoviesCard({movie}) {
           :
           <button className="card__delete-button"/>
         }
-        <p className="card__duration">{movie.duration}м</p>
+        <p className="card__duration">{timeCalculating}</p>
       </div>
     </div>
   );

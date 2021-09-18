@@ -8,12 +8,13 @@ import Portfolio from "../Portfolio/Portfolio";
 import Footer from "../Footer/Footer";
 import SideBar from "../SideBar/SideBar";
 
-function Main({ loggedIn, isSideBarOpened, handleSideBarState }) {
+function Main({ loggedIn, isSideBarOpened, handleSideBarState, screenWidth }) {
   return (
     <>
       <Header loggedIn={loggedIn}
         isSideBarOpened={isSideBarOpened}
-        handleSideBarState={handleSideBarState} />
+        handleSideBarState={handleSideBarState}
+        screenWidth={screenWidth} />
       <main className="content">
         <Promo />
         <AboutProject />

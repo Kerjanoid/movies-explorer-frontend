@@ -2,12 +2,13 @@ import "./Profile.css";
 import Header from "../Header/Header";
 import SideBar from "../SideBar/SideBar";
 
-function Profile({ loggedIn, isSideBarOpened, handleSideBarState }) {
+function Profile({ loggedIn, isSideBarOpened, handleSideBarState, screenWidth }) {
   return (
     <>
       <Header loggedIn={loggedIn}
         isSideBarOpened={isSideBarOpened}
-        handleSideBarState={handleSideBarState} />
+        handleSideBarState={handleSideBarState}
+        screenWidth={screenWidth} />
       <main className="content">
         <section className="profile">
           <h1 className="profile__greeting">Привет, Виталий!</h1>

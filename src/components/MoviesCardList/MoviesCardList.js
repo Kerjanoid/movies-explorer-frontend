@@ -1,8 +1,7 @@
 import "./MoviesCardList.css";
 import MoviesCard from "../MoviesCard/MoviesCard"
 
-function MoviesCardList({movies}) {
-  console.log(movies)
+function MoviesCardList({movies, showMoreMovies}) {
 
   return (
     <section className="cards">
@@ -13,7 +12,7 @@ function MoviesCardList({movies}) {
             key={movie.id} />
         ))}
       </div>
-      <button className="cards__more-button">Ещё</button>
+      <button className="cards__more-button" onClick={showMoreMovies}>Ещё</button>
     </section>
   );
 }
