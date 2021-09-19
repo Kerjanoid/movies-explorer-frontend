@@ -10,7 +10,7 @@ class MoviesApi {
     return Promise.reject(`Ошибка: ${res.status}. ${res.message}`)
   }
 
-  getInitialMovies() {
+  getMovies() {
     return fetch(this._baseUrl, {
       method: 'GET',
     })

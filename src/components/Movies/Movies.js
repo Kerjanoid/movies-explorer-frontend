@@ -1,6 +1,7 @@
 import "./Movies.css";
 import Header from "../Header/Header";
 import SearchForm from "../SearchForm/SearchForm"
+// eslint-disable-next-line
 import Preloader from "../Preloader/Preloader"
 import MoviesCardList from "../MoviesCardList/MoviesCardList"
 import Footer from "../Footer/Footer";
@@ -8,30 +9,31 @@ import SideBar from "../SideBar/SideBar";
 import { useState, useEffect } from "react"
 
 function Movies({ loggedIn, isSideBarOpened, handleSideBarState, isLiked, handleLikeClick, movies, screenWidth }) {
-  const [initialMoviesCount, setInitialMoviesCount] = useState(0)
-  const [addMoviesCount, setAddMoviesCount] = useState(0)
+  const [showingMoviesCount, setShowingMoviesCount] = useState(0)
+  const [addingMoviesCount, setAddingMoviesCount] = useState(0)
 
-  // Изначальное количество карточек фильмов на экране и карточек фильмов, добавляемых при нажании на кнопку "Ещё"
+// Начальное количество карточек фильмов на экране и количество карточек фильмов, добавляемых при нажании на кнопку "Ещё"
   useEffect(() => {
     if (screenWidth > 1297) {
-      setInitialMoviesCount(16);
-      setAddMoviesCount(4);
+      setShowingMoviesCount(16);
+      setAddingMoviesCount(4);
     } else if (screenWidth > 1237) {
-      setInitialMoviesCount(12);
-      setAddMoviesCount(3);
+      setShowingMoviesCount(12);
+      setAddingMoviesCount(3);
     } else if (screenWidth > 785) {
-      setInitialMoviesCount(8);
-      setAddMoviesCount(2);
+      setShowingMoviesCount(8);
+      setAddingMoviesCount(2);
     } else {
-      setInitialMoviesCount(5);
-      setAddMoviesCount(2);
+      setShowingMoviesCount(5);
+      setAddingMoviesCount(2);
     }}
-  , []);
+  , [screenWidth]);
 
-  const moviesVisibleCount = movies.slice(0, initialMoviesCount);
+// Массив карточке после нажания кнопки "Ещё"
+  const moviesVisibleCount = movies.slice(0, showingMoviesCount);
 
   function showMoreMovies() {
-    setInitialMoviesCount(prevState => prevState + addMoviesCount);
+    setShowingMoviesCount(prevState => prevState + addingMoviesCount);
   }
 
   return (
@@ -47,7 +49,8 @@ function Movies({ loggedIn, isSideBarOpened, handleSideBarState, isLiked, handle
         <MoviesCardList isLiked={isLiked}
           handleLikeClick={handleLikeClick}
           showMoreMovies={showMoreMovies}
-          movies={moviesVisibleCount} />
+          moviesVisibleCount={moviesVisibleCount}
+          movies={movies} />
       </main>
       <Footer />
       <SideBar isSideBarOpened={isSideBarOpened}

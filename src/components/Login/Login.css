@@ -150,6 +150,125 @@
   opacity: .7;
 }
 
+.login__form {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.login__form-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+}
+
+.login__form-input {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  position: relative;
+  font-weight: normal;
+  font-size: 10px;
+  line-height: 12px;
+  color: #8B8B8B;
+}
+
+.login__form-textfield {
+  width: 100%;
+  margin: 5px 0 24px;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
+  color: #FFFFFF;
+  padding: 0 0 10px 0;
+  border: none;
+  outline: none;
+  border-bottom: solid 1px #424242;
+  background: inherit;
+}
+
+.login__form-textfield:focus {
+  font-weight: 500;
+  border-bottom: solid 1px #4285F4;;
+}
+
+.login__form-textfield_error {
+  color: #EE3465;
+}
+
+.login__form-error {
+  margin: 0;
+  font-weight: normal;
+  font-size: 10px;
+  line-height: 12px;
+  color: #EE3465;
+  opacity: 0;
+  position: absolute;
+  bottom: 6px;
+  left: 0;
+  transition: .3s;
+}
+
+.login__form-error_visible {
+  opacity: 1;
+}
+
+.login__form-button {
+  margin: 128px 0 16px;
+  padding: 13px 0 15px;
+  box-sizing: border-box;
+  width: 100%;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #FFFFFF;
+  cursor: pointer;
+  background: #4285F4;
+  border-radius: 3px;
+  border: none;
+  transition: .4s;
+}
+
+.login__form-button:hover {
+  opacity: .8;
+}
+
+.login__form-text {
+  margin: 0;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
+  transition: .4s;
+}
+
+.login__form-link {
+  margin: 0 0 0 6px;
+  cursor: pointer;
+  text-decoration: none;
+  color: #4285F4;
+  transition: .4s;
+}
+
+.login__form-link:hover {
+  opacity: .7;
+}
+
+.login__form-button_disabled {
+  background: #888888;
+  cursor: default;
+}
+
+.login__form-button_disabled:hover {
+  opacity: 1;
+}
+
 @media screen and (max-width: 450px) {
   .login {
     max-width: 450px;
@@ -172,6 +291,18 @@
   }
 
   .login__text {
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  .login__form-button {
+    margin: 285px 0 14px;
+    padding: 15px 0 ;
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  .login__form-text {
     font-size: 12px;
     line-height: 15px;
   }
