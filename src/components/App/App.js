@@ -14,7 +14,7 @@ import MoviesApi from "../../utils/MoviesApi";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute"
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(true);
   const [isSideBarOpened, setIsSideBarOpened] = useState(false);
   const [movies, setMovies] = useState([]);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
@@ -54,12 +54,11 @@ function App() {
     const token = localStorage.getItem('token')
     if (token) {
       MainApi.getToken(token)
-        .then(res => {
+        .then(() => {
           setLoggedIn(true)
-          history.push('/')
         })
         .catch(err => console.log(err))
-    }
+    } else {setLoggedIn(false)}
   };
 
   const handleRegister = (name, email, password) => {
@@ -68,10 +67,11 @@ function App() {
     MainApi.register(name, email, password)
       .then(res => {
         if (res) {
-          alert("Зарегался")}
+          setTimeout(() => {
+          handleLogin(email, password);
+        }, 500)}
         })
       .catch(err => {
-        alert("Не зарегался")
         console.log(err)})
       .finally(() => {
         setWaiting(null)
@@ -97,6 +97,25 @@ function App() {
       })
   };
 
+  const handleSignOut = () => {
+    localStorage.removeItem('token')
+    setLoggedIn(false)
+  }
+
+  const handleUpdateUser = (name, email) => {
+    setWaiting("Сохранение...")
+    setDisableButton(true)
+    MainApi.editProfile(name, email)
+      .then((data) => {
+        setCurrentUser(data)
+      })
+      .catch(err => console.log(err))
+      .finally(() => {
+        setWaiting(null)
+        setDisableButton(false)
+      })
+  }
+
   const handleSideBarState = () => {
     setIsSideBarOpened(!isSideBarOpened)
   }
@@ -116,38 +135,44 @@ function App() {
             handleSideBarState={handleSideBarState}
             screenWidth={screenWidth} />
         </Route>
-        <ProtectedRoute exact path="/movies">
-          <Movies loggedIn={loggedIn}
-            isSideBarOpened={isSideBarOpened}
-            handleSideBarState={handleSideBarState}
-            movies={movies}
-            screenWidth={screenWidth} />
-        </ProtectedRoute>
-        <ProtectedRoute exact path="/saved-movies">
-          <SavedMovies loggedIn={loggedIn}
-            isSideBarOpened={isSideBarOpened}
-            movies={movies}
-            handleSideBarState={handleSideBarState}
-            screenWidth={screenWidth} />
-        </ProtectedRoute>
+        <ProtectedRoute exact path="/movies"
+          loggedIn={loggedIn}
+          component={Movies}
+          isSideBarOpened={isSideBarOpened}
+          handleSideBarState={handleSideBarState}
+          movies={movies}
+          screenWidth={screenWidth} />
+        <ProtectedRoute exact path="/saved-movies"
+          loggedIn={loggedIn}
+          component={SavedMovies}
+          isSideBarOpened={isSideBarOpened}
+          movies={movies}
+          handleSideBarState={handleSideBarState}
+          screenWidth={screenWidth} />
+        <ProtectedRoute exact path="/profile"
+          loggedIn={loggedIn}
+          component={Profile}
+          isSideBarOpened={isSideBarOpened}
+          handleSideBarState={handleSideBarState}
+          screenWidth={screenWidth}
+          handleUpdateUser={handleUpdateUser}
+          waiting={waiting}
+          disableButton={disableButton}
+          handleSignOut={handleSignOut} />
         <Route exact path="/signup">
           <Register
+            loggedIn={loggedIn}
             handleRegister={handleRegister}
             waiting={waiting}
             disableButton={disableButton} />
         </Route>
         <Route exact path="/signin">
           <Login
+            loggedIn={loggedIn}
             handleLogin={handleLogin}
             waiting={waiting}
             disableButton={disableButton} />
         </Route>
-        <ProtectedRoute exact path="/profile">
-          <Profile loggedIn={loggedIn}
-            isSideBarOpened={isSideBarOpened}
-            handleSideBarState={handleSideBarState}
-            screenWidth={screenWidth} />
-        </ProtectedRoute>
         <Route path="*">
           <NotFound />
         </Route>

@@ -1,12 +1,25 @@
 import "./Register.css";
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link, useHistory } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 function Register({ handleRegister, waiting, disableButton }) {
+  const history = useHistory()
+
+  useEffect(() => {
+    stateCheck()
+  }, []);
+
+  const stateCheck = () => {
+    const token = localStorage.getItem("token")
+    if (token) {
+      history.push("/")
+    }
+  }
+
   const [data, setData] = useState({
-    name: '',
-    email: '',
-    password: ''
+    name: "",
+    email: "",
+    password: ""
   })
 
   const handleChange = (e) => {

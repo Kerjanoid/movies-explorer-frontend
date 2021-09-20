@@ -115,6 +115,15 @@
   opacity: .7;
 }
 
+.form__button-edit_disabled {
+  color: #888888;
+  cursor: default;
+}
+
+.form__button-edit_disabled:hover {
+  opacity: 1;
+}
+
 @media screen and (max-width: 800px) {
   .profile__greeting {
     margin: 236px 0 0 0;

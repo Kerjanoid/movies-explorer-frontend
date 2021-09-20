@@ -6,7 +6,7 @@ import Preloader from "../Preloader/Preloader"
 import MoviesCardList from "../MoviesCardList/MoviesCardList"
 import Footer from "../Footer/Footer";
 import SideBar from "../SideBar/SideBar";
-import { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
 
 function Movies({ loggedIn, isSideBarOpened, handleSideBarState, isLiked, handleLikeClick, movies, screenWidth }) {
   const [showingMoviesCount, setShowingMoviesCount] = useState(0)

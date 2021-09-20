@@ -1,8 +1,21 @@
 import "./Login.css";
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link, useHistory } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 function Login({ disableButton, waiting, handleLogin }) {
+  const history = useHistory()
+
+  useEffect(() => {
+    stateCheck()
+  }, []);
+
+  const stateCheck = () => {
+    const token = localStorage.getItem("token")
+    if (token) {
+      history.push("/")
+    }
+  }
+
   const [data, setData] = useState({
     email: "",
     password: "",

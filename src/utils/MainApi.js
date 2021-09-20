@@ -7,7 +7,7 @@ class MainApi {
     if (res.ok) {
       return res.json()
     }
-    return Promise.reject(`Ошибка: ${res.status}. ${res.message}`)
+    return Promise.reject(`Error ${res.status}.`)
   }
 
   register = (name, email, password) => {
