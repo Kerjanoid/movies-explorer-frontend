@@ -4,8 +4,13 @@ import SearchForm from "../SearchForm/SearchForm"
 import MoviesCardList from "../MoviesCardList/MoviesCardList"
 import Footer from "../Footer/Footer";
 import SideBar from "../SideBar/SideBar";
+import { useState, useEffect } from "react";
 
-function SavedMovies({ loggedIn, isSideBarOpened, handleSideBarState, movies, screenWidth, isLiked, handleLikeClick }) {
+function SavedMovies({ loggedIn, isSideBarOpened, handleSideBarState, movies, screenWidth, isLiked, handleLikeClick, searchMovies }) {
+  const disableMoreButton = true;
+
+  const moviesVisibleCount = movies;
+
   return (
     <>
       <Header loggedIn={loggedIn}
@@ -13,11 +18,15 @@ function SavedMovies({ loggedIn, isSideBarOpened, handleSideBarState, movies, sc
         handleSideBarState={handleSideBarState}
         screenWidth={screenWidth} />
       <main className="content">
-        <SearchForm />
+        <SearchForm
+          searchMovies={searchMovies} />
         {/* <Preloader /> */}
       {/* Preloader будет вставляться вместо <MoviesCardList/> при выполнении поиска */}
-        <MoviesCardList
-          movies={movies}/>
+        <MoviesCardList isLiked={isLiked}
+          handleLikeClick={handleLikeClick}
+          movies={movies}
+          disableMoreButton={disableMoreButton}
+          moviesVisibleCount={moviesVisibleCount} />
       </main>
       <Footer />
       <SideBar isSideBarOpened={isSideBarOpened}

@@ -8,7 +8,7 @@ import Footer from "../Footer/Footer";
 import SideBar from "../SideBar/SideBar";
 import { useState, useEffect } from "react";
 
-function Movies({ loggedIn, isSideBarOpened, handleSideBarState, isLiked, handleLikeClick, movies, screenWidth }) {
+function Movies({ loggedIn, isSideBarOpened, handleSideBarState, isLiked, handleLikeClick, movies, searchMovies, screenWidth }) {
   const [showingMoviesCount, setShowingMoviesCount] = useState(0)
   const [addingMoviesCount, setAddingMoviesCount] = useState(0)
 
@@ -43,7 +43,8 @@ function Movies({ loggedIn, isSideBarOpened, handleSideBarState, isLiked, handle
         handleSideBarState={handleSideBarState}
         screenWidth={screenWidth} />
       <main className="content">
-        <SearchForm />
+        <SearchForm
+          searchMovies={searchMovies} />
         {/* <Preloader /> */}
       {/* Preloader будет вставляться вместо <MoviesCardList/> при выполнении поиска */}
         <MoviesCardList isLiked={isLiked}

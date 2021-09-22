@@ -48,7 +48,7 @@ class MainApi {
       method: 'GET',
       headers: {
         "Content-Type": "application/json",
-        authorization: `Bearer ${localStorage.getItem('token')}`,
+        authorization: `Bearer ${localStorage.getItem("token")}`,
       }
     })
       .then(this._checkResponse)
@@ -59,7 +59,7 @@ class MainApi {
       method: 'PATCH',
       headers: {
         "Content-Type": "application/json",
-        authorization: `Bearer ${localStorage.getItem('token')}`,
+        authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       body: JSON.stringify({name, email})
     })

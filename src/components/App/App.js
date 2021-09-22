@@ -17,6 +17,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(true);
   const [isSideBarOpened, setIsSideBarOpened] = useState(false);
   const [movies, setMovies] = useState([]);
+  const [foundMovies, setFoundMovies] = useState([]);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [currentUser, setCurrentUser] = useState({});
   const [waiting, setWaiting] = useState(null);
@@ -25,6 +26,7 @@ function App() {
 
   useEffect(() => {
     tokenCheck()
+    initialMoviesCheck()
   }, []);
 
   useEffect(() => {
@@ -32,14 +34,6 @@ function App() {
       handleResize()
     }, 1000));
   }, []);
-
-  useEffect(() => {
-    MoviesApi.getMovies()
-      .then(moviesData => {
-        setMovies(moviesData)
-    })
-      .catch(err => console.log(err))}
-  , []);
 
   useEffect(() => {
     if (loggedIn === true) {
@@ -51,7 +45,7 @@ function App() {
   }, [loggedIn]);
 
   const tokenCheck = () => {
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem("token")
     if (token) {
       MainApi.getToken(token)
         .then(() => {
@@ -59,6 +53,15 @@ function App() {
         })
         .catch(err => console.log(err))
     } else {setLoggedIn(false)}
+  };
+
+  const initialMoviesCheck = () => {
+    const initialMovies = JSON.parse(localStorage.getItem("initialMovies"))
+    if (initialMovies) {
+      setMovies(initialMovies)
+      const initialFounMovies = JSON.parse(localStorage.getItem("foundMovies"))
+      setFoundMovies(initialFounMovies)
+    }
   };
 
   const handleRegister = (name, email, password) => {
@@ -85,9 +88,9 @@ function App() {
     MainApi.login(email, password)
       .then(res => {
         if (res.token) {
-          localStorage.setItem('token', res.token)
+          localStorage.setItem("token", res.token)
           setLoggedIn(true)
-          history.push('/')
+          history.push("/movies")
         }
       })
       .catch(err => console.log(err))
@@ -98,9 +101,11 @@ function App() {
   };
 
   const handleSignOut = () => {
-    localStorage.removeItem('token')
+    localStorage.clear()
     setLoggedIn(false)
-  }
+    history.push("/")
+    setCurrentUser({})
+  };
 
   const handleUpdateUser = (name, email) => {
     setWaiting("Сохранение...")
@@ -114,16 +119,35 @@ function App() {
         setWaiting(null)
         setDisableButton(false)
       })
-  }
+  };
 
   const handleSideBarState = () => {
     setIsSideBarOpened(!isSideBarOpened)
-  }
+  };
 
   const handleResize = () => {
     setScreenWidth(
       window.innerWidth,
-    );
+    )
+  };
+
+  const searchMovies = (searchText) => {
+    const initialMovies = JSON.parse(localStorage.getItem("initialMovies"))
+    if (!initialMovies) {
+      MoviesApi.getMovies()
+        .then(moviesData => {
+          if (movies.length === 0) {
+            setFoundMovies(moviesData.filter(movie => movie.nameRU.toLowerCase().indexOf(searchText.toLowerCase()) > -1))
+            setMovies(moviesData)
+            localStorage.setItem("initialMovies", JSON.stringify(moviesData))
+            localStorage.setItem("foundMovies", JSON.stringify(moviesData.filter(movie => movie.nameRU.toLowerCase().indexOf(searchText.toLowerCase()) > -1)))
+          }
+      })
+      .catch(err => console.log(err))
+    } else {
+        setFoundMovies(initialMovies.filter(movie => movie.nameRU.toLowerCase().indexOf(searchText.toLowerCase()) > -1))
+        localStorage.setItem("foundMovies", JSON.stringify(initialMovies.filter(movie => movie.nameRU.toLowerCase().indexOf(searchText.toLowerCase()) > -1)))
+      }
   };
 
   return (
@@ -140,15 +164,17 @@ function App() {
           component={Movies}
           isSideBarOpened={isSideBarOpened}
           handleSideBarState={handleSideBarState}
-          movies={movies}
-          screenWidth={screenWidth} />
+          screenWidth={screenWidth}
+          movies={foundMovies}
+          searchMovies={searchMovies} />
         <ProtectedRoute exact path="/saved-movies"
           loggedIn={loggedIn}
           component={SavedMovies}
           isSideBarOpened={isSideBarOpened}
-          movies={movies}
+          movies={foundMovies}
           handleSideBarState={handleSideBarState}
-          screenWidth={screenWidth} />
+          screenWidth={screenWidth}
+          searchMovies={searchMovies} />
         <ProtectedRoute exact path="/profile"
           loggedIn={loggedIn}
           component={Profile}
