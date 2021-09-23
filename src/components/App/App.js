@@ -13,6 +13,13 @@ import MainApi from "../../utils/MainApi";
 import MoviesApi from "../../utils/MoviesApi";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute"
 
+// TODO: 
+// 1. Запилить состояния радиокнопки
+// 2. Запилить фильтрацию по duration радиокнопкой
+// 3. Запилить работу с компонентом SavedMovies
+// 4. Запилить прелоадер при поиске фильмов
+// 5. Запилить ошибку поиска, если ничего не найдено
+
 function App() {
   const [loggedIn, setLoggedIn] = useState(true);
   const [isSideBarOpened, setIsSideBarOpened] = useState(false);
