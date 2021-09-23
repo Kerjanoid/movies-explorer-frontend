@@ -1,14 +1,24 @@
 import "./Movies.css";
 import Header from "../Header/Header";
-import SearchForm from "../SearchForm/SearchForm"
-// eslint-disable-next-line
-import Preloader from "../Preloader/Preloader"
-import MoviesCardList from "../MoviesCardList/MoviesCardList"
+import SearchForm from "../SearchForm/SearchForm";
+import Preloader from "../Preloader/Preloader";
+import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Footer from "../Footer/Footer";
 import SideBar from "../SideBar/SideBar";
 import { useState, useEffect } from "react";
 
-function Movies({ loggedIn, isSideBarOpened, handleSideBarState, isLiked, handleLikeClick, movies, searchMovies, screenWidth }) {
+function Movies({ loggedIn,
+  isSideBarOpened,
+  handleSideBarState,
+  isLiked,
+  handleLikeClick,
+  movies,
+  searchMovies,
+  screenWidth,
+  handleChangeСheckbox,
+  checked,
+  isLoading }) {
+
   const [showingMoviesCount, setShowingMoviesCount] = useState(0)
   const [addingMoviesCount, setAddingMoviesCount] = useState(0)
 
@@ -44,14 +54,16 @@ function Movies({ loggedIn, isSideBarOpened, handleSideBarState, isLiked, handle
         screenWidth={screenWidth} />
       <main className="content">
         <SearchForm
-          searchMovies={searchMovies} />
-        {/* <Preloader /> */}
-      {/* Preloader будет вставляться вместо <MoviesCardList/> при выполнении поиска */}
-        <MoviesCardList isLiked={isLiked}
-          handleLikeClick={handleLikeClick}
-          showMoreMovies={showMoreMovies}
-          moviesVisibleCount={moviesVisibleCount}
-          movies={movies} />
+          searchMovies={searchMovies}
+          handleChangeСheckbox={handleChangeСheckbox}
+          checked={checked} />
+        {isLoading ?
+          <Preloader /> :
+          <MoviesCardList isLiked={isLiked}
+            handleLikeClick={handleLikeClick}
+            showMoreMovies={showMoreMovies}
+            moviesVisibleCount={moviesVisibleCount}
+            movies={movies} />}
       </main>
       <Footer />
       <SideBar isSideBarOpened={isSideBarOpened}

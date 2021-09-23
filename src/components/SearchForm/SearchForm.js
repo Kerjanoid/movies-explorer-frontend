@@ -2,7 +2,7 @@ import "./SearchForm.css";
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox"
 import { useState } from "react";
 
-function SearchForm({ searchMovies }) {
+function SearchForm({ searchMovies, handleChangeСheckbox, checked }) {
   const [inputText, setInputText] = useState("")
 
   const handleChange = (e) => {
@@ -31,7 +31,9 @@ function SearchForm({ searchMovies }) {
           </label>
           <input className="search__button" type="submit" value="Найти" />
         </form>
-        <FilterCheckbox />
+        <FilterCheckbox
+          handleChangeСheckbox={handleChangeСheckbox}
+          checked={checked} />
       </div>
     </section>
   );

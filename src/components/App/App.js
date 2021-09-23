@@ -22,6 +22,8 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [waiting, setWaiting] = useState(null);
   const [disableButton, setDisableButton] = useState(false);
+  const [checked, setChecked] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
@@ -107,6 +109,10 @@ function App() {
     setCurrentUser({})
   };
 
+  const handleChangeСheckbox = () => {
+    setChecked(!checked)
+  };
+
   const handleUpdateUser = (name, email) => {
     setWaiting("Сохранение...")
     setDisableButton(true)
@@ -133,21 +139,41 @@ function App() {
 
   const searchMovies = (searchText) => {
     const initialMovies = JSON.parse(localStorage.getItem("initialMovies"))
+    setIsLoading(true)
     if (!initialMovies) {
       MoviesApi.getMovies()
         .then(moviesData => {
           if (movies.length === 0) {
-            setFoundMovies(moviesData.filter(movie => movie.nameRU.toLowerCase().indexOf(searchText.toLowerCase()) > -1))
-            setMovies(moviesData)
-            localStorage.setItem("initialMovies", JSON.stringify(moviesData))
-            localStorage.setItem("foundMovies", JSON.stringify(moviesData.filter(movie => movie.nameRU.toLowerCase().indexOf(searchText.toLowerCase()) > -1)))
+            const foundResult = moviesData.filter(movie => movie.nameRU.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
+            if (checked) {
+              const foundShortResult = foundResult.filter(movie => movie.duration <= 40)
+              setFoundMovies(foundShortResult)
+              setMovies(moviesData)
+              localStorage.setItem("initialMovies", JSON.stringify(moviesData))
+              localStorage.setItem("foundMovies", JSON.stringify(foundShortResult))
+            } else {
+              const foundNotShortResult = foundResult.filter(movie => movie.duration > 40)
+              setFoundMovies(foundNotShortResult)
+              setMovies(moviesData)
+              localStorage.setItem("initialMovies", JSON.stringify(moviesData))
+              localStorage.setItem("foundMovies", JSON.stringify(foundNotShortResult))
+            }
           }
-      })
-      .catch(err => console.log(err))
+        })
+        .catch(err => console.log(err))
     } else {
-        setFoundMovies(initialMovies.filter(movie => movie.nameRU.toLowerCase().indexOf(searchText.toLowerCase()) > -1))
-        localStorage.setItem("foundMovies", JSON.stringify(initialMovies.filter(movie => movie.nameRU.toLowerCase().indexOf(searchText.toLowerCase()) > -1)))
+      const foundResult = initialMovies.filter(movie => movie.nameRU.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
+      if (checked) {
+        const foundShortResult = foundResult.filter(movie => movie.duration <= 40)
+        setFoundMovies(foundShortResult)
+        localStorage.setItem("foundMovies", JSON.stringify(foundShortResult))
+      } else {
+        const foundNotShortResult = foundResult.filter(movie => movie.duration > 40)
+        setFoundMovies(foundNotShortResult)
+        localStorage.setItem("foundMovies", JSON.stringify(foundNotShortResult))
       }
+    }
+    setTimeout(() => {setIsLoading(false)}, 2000)
   };
 
   return (
@@ -166,7 +192,10 @@ function App() {
           handleSideBarState={handleSideBarState}
           screenWidth={screenWidth}
           movies={foundMovies}
-          searchMovies={searchMovies} />
+          searchMovies={searchMovies}
+          handleChangeСheckbox={handleChangeСheckbox}
+          checked={checked}
+          isLoading={isLoading} />
         <ProtectedRoute exact path="/saved-movies"
           loggedIn={loggedIn}
           component={SavedMovies}
@@ -174,7 +203,10 @@ function App() {
           movies={foundMovies}
           handleSideBarState={handleSideBarState}
           screenWidth={screenWidth}
-          searchMovies={searchMovies} />
+          searchMovies={searchMovies}
+          handleChangeСheckbox={handleChangeСheckbox}
+          checked={checked}
+          isLoading={isLoading} />
         <ProtectedRoute exact path="/profile"
           loggedIn={loggedIn}
           component={Profile}

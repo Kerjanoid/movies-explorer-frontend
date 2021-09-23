@@ -38,7 +38,7 @@ function Profile({ loggedIn, isSideBarOpened, handleSideBarState, screenWidth, h
         screenWidth={screenWidth} />
       <main className="content">
         <section className="profile">
-          <h1 className="profile__greeting">Привет, {data.name}!</h1>
+          <h1 className="profile__greeting">Привет, {currentUser.name}!</h1>
           <form className="profile__form"  onSubmit={handleSubmit}>
             <div className="profile__form-wrapper">
               <label className="profile__input">Имя
