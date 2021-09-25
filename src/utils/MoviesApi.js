@@ -3,14 +3,14 @@ class MoviesApi {
     this._baseUrl = baseUrl;
   }
 
-  _checkResponse(res) {
+  _checkResponse = (res) => {
     if (res.ok) {
       return res.json()
     }
     return Promise.reject(`Error ${res.status}.`)
   }
 
-  getMovies() {
+  getMovies = () => {
     return fetch(this._baseUrl, {
       method: 'GET',
     })

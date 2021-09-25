@@ -6,8 +6,12 @@ function MoviesCard({movie}) {
   const [isLiked, setIsLiked] = useState(false);
   const { pathname } = useLocation();
 
-  const handleLikeClick = () => {
-    setIsLiked(!isLiked)
+  const handleLike = () => {
+    setIsLiked(true)
+  }
+
+  const handleDeleteLike = () => {
+    setIsLiked(false)
   }
 
   const handlePictureClick = () => {
@@ -25,7 +29,8 @@ function MoviesCard({movie}) {
       <div className="card__description">
         <h2 className="card__titel">{movie.nameRU}</h2>
         {pathname === "/movies" ?
-          <button onClick={handleLikeClick} className={`card__like-button ${isLiked ? "card__like-button_liked" : ""}`}/>
+          isLiked ? <button onClick={handleDeleteLike} className="card__like-button card__like-button_liked" /> :
+            <button onClick={handleLike} className="card__like-button" />
           :
           <button className="card__delete-button"/>
         }

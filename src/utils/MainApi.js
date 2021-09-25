@@ -3,7 +3,7 @@ class MainApi {
     this._baseUrl = baseUrl;
   }
 
-  _checkResponse(res) {
+  _checkResponse = (res) => {
     if (res.ok) {
       return res.json()
     }
@@ -64,6 +64,52 @@ class MainApi {
       body: JSON.stringify({name, email})
     })
       .then(this._checkResponse)
+  }
+
+  saveMovies = (movie) => {
+    return fetch(`${this._baseUrl}/movies`, {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({
+        country: movie.country,
+        director: movie.director,
+        duration: movie.duration,
+        year: movie.year,
+        description: movie.description,
+        image: movie.image,
+        trailer: movie.trailer,
+        thumbnail: movie.thumbnail,
+        movieId: String(movie.movieId),
+        nameRU: movie.nameRU,
+        nameEN: movie.nameEN,
+    })
+      .then(this._checkResponse)
+    })
+  }
+
+  getMovies = () => {
+    return fetch(`${this._baseUrl}/movies`, {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("token")}`,
+      }
+      .then(this._checkResponse)
+    })
+  }
+
+  deleteSavedMovies = (id) => {
+    return fetch(`${this._baseUrl}/movies/${id}`, {
+      method: 'DELETE',
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("token")}`,
+      }
+      .then(this._checkResponse)
+    })
   }
 }
 
