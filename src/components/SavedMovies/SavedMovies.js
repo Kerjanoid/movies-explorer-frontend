@@ -7,18 +7,21 @@ import SideBar from "../SideBar/SideBar";
 import Preloader from "../Preloader/Preloader";
 import { useState, useEffect } from "react";
 
-function SavedMovies({ loggedIn,
+function SavedMovies({
+  loggedIn,
   isSideBarOpened,
   handleSideBarState,
-  movies, screenWidth,
-  isLiked,
+  movies,
+  screenWidth,
   handleLikeClick,
   searchMovies,
   handleChangeСheckbox,
   checked,
-  isLoading }) {
+  isLoading,
+  isSaved,
+  deleteSavedMoivies,
+  savedMovies }) {
 
-  const disableMoreButton = true;
   const moviesVisibleCount = movies;
 
   return (
@@ -31,14 +34,17 @@ function SavedMovies({ loggedIn,
         <SearchForm
           searchMovies={searchMovies}
           handleChangeСheckbox={handleChangeСheckbox}
-          checked={checked} />
+          checked={checked}
+          isSaved={true} />
         {isLoading ?
           <Preloader /> :
-        <MoviesCardList isLiked={isLiked}
+        <MoviesCardList
           handleLikeClick={handleLikeClick}
+          deleteSavedMoivies={deleteSavedMoivies}
           movies={movies}
-          disableMoreButton={disableMoreButton}
-          moviesVisibleCount={moviesVisibleCount} />}
+          moviesVisibleCount={moviesVisibleCount}
+          savedMovies={savedMovies}
+          isSaved={true} />}
       </main>
       <Footer />
       <SideBar isSideBarOpened={isSideBarOpened}

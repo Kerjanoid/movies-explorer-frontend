@@ -25,6 +25,8 @@ function App() {
   const [isSideBarOpened, setIsSideBarOpened] = useState(false);
   const [movies, setMovies] = useState([]);
   const [foundMovies, setFoundMovies] = useState([]);
+  const [savedMovies, setSavedMovies] = useState([]);
+  const [savedFoundMovies, setSavedFoundMovies] = useState([]);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [currentUser, setCurrentUser] = useState({});
   const [waiting, setWaiting] = useState(null);
@@ -34,13 +36,13 @@ function App() {
   const history = useHistory();
 
   useEffect(() => {
-    tokenCheck()
-    initialMoviesCheck()
+    tokenCheck();
+    initialMoviesCheck();
   }, []);
 
   useEffect(() => {
     window.addEventListener("resize", () => setTimeout(() => {
-      handleResize()
+      handleResize();
     }, 1000));
   }, []);
 
@@ -48,28 +50,32 @@ function App() {
     if (loggedIn === true) {
       MainApi.getUserInformation()
       .then(userData => {
-        setCurrentUser(userData)
+        setCurrentUser(userData);
       })
       .catch(err => console.log(err))}
   }, [loggedIn]);
 
   const tokenCheck = () => {
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem("token");
     if (token) {
       MainApi.getToken(token)
         .then(() => {
-          setLoggedIn(true)
+          setLoggedIn(true);
         })
         .catch(err => console.log(err))
     } else {setLoggedIn(false)}
   };
 
   const initialMoviesCheck = () => {
-    const initialMovies = JSON.parse(localStorage.getItem("initialMovies"))
+    const initialMovies = JSON.parse(localStorage.getItem("initialMovies"));
+    const savedMovies = JSON.parse(localStorage.getItem("savedMovies"));
     if (initialMovies) {
-      setMovies(initialMovies)
-      const initialFounMovies = JSON.parse(localStorage.getItem("foundMovies"))
-      setFoundMovies(initialFounMovies)
+      setMovies(initialMovies);
+      const initialFoundMovies = JSON.parse(localStorage.getItem("foundMovies"));
+      setFoundMovies(initialFoundMovies);
+        if (savedMovies) {
+          setSavedMovies(savedMovies);
+        } else {setSavedMovies([])}
     }
   };
 
@@ -86,8 +92,8 @@ function App() {
       .catch(err => {
         console.log(err)})
       .finally(() => {
-        setWaiting(null)
-        setDisableButton(false)
+        setWaiting(null);
+        setDisableButton(false);
       })
   };
 
@@ -97,40 +103,40 @@ function App() {
     MainApi.login(email, password)
       .then(res => {
         if (res.token) {
-          localStorage.setItem("token", res.token)
-          setLoggedIn(true)
-          history.push("/movies")
+          localStorage.setItem("token", res.token);
+          setLoggedIn(true);
+          history.push("/movies");
         }
       })
       .catch(err => console.log(err))
       .finally(() => {
-        setWaiting(null)
-        setDisableButton(false)
+        setWaiting(null);
+        setDisableButton(false);
       })
   };
 
   const handleSignOut = () => {
-    localStorage.clear()
-    setLoggedIn(false)
-    history.push("/")
-    setCurrentUser({})
+    localStorage.clear();
+    setLoggedIn(false);
+    history.push("/");
+    setCurrentUser({});
   };
 
   const handleChangeСheckbox = () => {
-    setChecked(!checked)
+    setChecked(!checked);
   };
 
   const handleUpdateUser = (name, email) => {
-    setWaiting("Сохранение...")
-    setDisableButton(true)
+    setWaiting("Сохранение...");
+    setDisableButton(true);
     MainApi.editProfile(name, email)
       .then((data) => {
-        setCurrentUser(data)
+        setCurrentUser(data);
       })
       .catch(err => console.log(err))
       .finally(() => {
-        setWaiting(null)
-        setDisableButton(false)
+        setWaiting(null);
+        setDisableButton(false);
       })
   };
 
@@ -151,19 +157,19 @@ function App() {
       MoviesApi.getMovies()
         .then(moviesData => {
           if (movies.length === 0) {
-            const foundResult = moviesData.filter(movie => movie.nameRU.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
+            const foundResult = moviesData.filter(movie => movie.nameRU.toLowerCase().indexOf(searchText.toLowerCase()) > -1);
             if (checked) {
-              const foundShortResult = foundResult.filter(movie => movie.duration <= 40)
-              setFoundMovies(foundShortResult)
-              setMovies(moviesData)
-              localStorage.setItem("initialMovies", JSON.stringify(moviesData))
-              localStorage.setItem("foundMovies", JSON.stringify(foundShortResult))
+              const foundShortResult = foundResult.filter(movie => movie.duration <= 40);
+              setFoundMovies(foundShortResult);
+              setMovies(moviesData);
+              localStorage.setItem("initialMovies", JSON.stringify(moviesData));
+              localStorage.setItem("foundMovies", JSON.stringify(foundShortResult));
             } else {
-              const foundNotShortResult = foundResult.filter(movie => movie.duration > 40)
-              setFoundMovies(foundNotShortResult)
-              setMovies(moviesData)
-              localStorage.setItem("initialMovies", JSON.stringify(moviesData))
-              localStorage.setItem("foundMovies", JSON.stringify(foundNotShortResult))
+              const foundNotShortResult = foundResult.filter(movie => movie.duration > 40);
+              setFoundMovies(foundNotShortResult);
+              setMovies(moviesData);
+              localStorage.setItem("initialMovies", JSON.stringify(moviesData));
+              localStorage.setItem("foundMovies", JSON.stringify(foundNotShortResult));
             }
           }
         })
@@ -171,16 +177,40 @@ function App() {
     } else {
       const foundResult = initialMovies.filter(movie => movie.nameRU.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
       if (checked) {
-        const foundShortResult = foundResult.filter(movie => movie.duration <= 40)
-        setFoundMovies(foundShortResult)
-        localStorage.setItem("foundMovies", JSON.stringify(foundShortResult))
+        const foundShortResult = foundResult.filter(movie => movie.duration <= 40);
+        setFoundMovies(foundShortResult);
+        localStorage.setItem("foundMovies", JSON.stringify(foundShortResult));
       } else {
-        const foundNotShortResult = foundResult.filter(movie => movie.duration > 40)
-        setFoundMovies(foundNotShortResult)
-        localStorage.setItem("foundMovies", JSON.stringify(foundNotShortResult))
+        const foundNotShortResult = foundResult.filter(movie => movie.duration > 40);
+        setFoundMovies(foundNotShortResult);
+        localStorage.setItem("foundMovies", JSON.stringify(foundNotShortResult));
       }
     }
-    setTimeout(() => {setIsLoading(false)}, 2000)
+    setTimeout(() => {setIsLoading(false)}, 2000);
+  };
+
+  const saveMovies = (movie) => {
+    MainApi.saveMovies(movie)
+      .then(res => {
+        const movies = [...savedMovies, res];
+        localStorage.setItem("savedMovies", JSON.stringify(movies));
+        setSavedMovies(prev => [...prev, res]);
+      })
+      .catch(err => console.log(err))
+  };
+
+  const filterMoviesById = (collection, id) => {
+    return collection.filter(item => { return item._id !== id });
+  };
+
+  const deleteSavedMoivies = (id) => {
+    MainApi.deleteSavedMovies(id)
+      .then(() => {
+        const movies = filterMoviesById(savedMovies, id);
+        setSavedMovies(movies);
+        localStorage.setItem("savedMovies", JSON.stringify(movies));
+      })
+      .catch(err => console.log(err))
   };
 
   return (
@@ -202,18 +232,23 @@ function App() {
           searchMovies={searchMovies}
           handleChangeСheckbox={handleChangeСheckbox}
           checked={checked}
-          isLoading={isLoading} />
+          isLoading={isLoading}
+          saveMovies={saveMovies}
+          deleteSavedMoivies={deleteSavedMoivies}
+          savedMovies={savedMovies} />
         <ProtectedRoute exact path="/saved-movies"
           loggedIn={loggedIn}
           component={SavedMovies}
           isSideBarOpened={isSideBarOpened}
-          movies={foundMovies}
+          movies={savedMovies}
           handleSideBarState={handleSideBarState}
           screenWidth={screenWidth}
           searchMovies={searchMovies}
           handleChangeСheckbox={handleChangeСheckbox}
           checked={checked}
-          isLoading={isLoading} />
+          isLoading={isLoading}
+          deleteSavedMoivies={deleteSavedMoivies}
+          savedMovies={savedMovies} />
         <ProtectedRoute exact path="/profile"
           loggedIn={loggedIn}
           component={Profile}

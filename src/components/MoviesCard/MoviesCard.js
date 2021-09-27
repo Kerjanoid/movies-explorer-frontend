@@ -1,17 +1,40 @@
 import './MoviesCard.css';
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useLocation } from "react-router-dom";
+import { CurrentUserContext } from "../../contexts/CurrenUserContext";
 
-function MoviesCard({movie}) {
-  const [isLiked, setIsLiked] = useState(false);
+function MoviesCard({ movie, saveMovies, deleteSavedMoivies, savedMovies, isSaved }) {
   const { pathname } = useLocation();
+  const [isLiked, setIsLiked] = useState(false);
+  const currentUser = useContext(CurrentUserContext);
+
+  const thisMovie = {
+    country: movie.country || " ",
+    director: movie.director || " ",
+    duration: movie.duration || 0,
+    year: movie.year || " ",
+    description: movie.description || " ",
+    image: isSaved ? movie.image : `https://api.nomoreparties.co${movie.image.url}`,
+    trailer: isSaved ? movie.trailer : movie.trailerLink,
+    thumbnail:  isSaved ? movie.thumbnail : `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`,
+    movieId: isSaved ? movie._id : movie.id,
+    nameRU: movie.nameRU || " ",
+    nameEN: movie.nameEN || " ",
+  }
 
   const handleLike = () => {
     setIsLiked(true)
+    saveMovies(thisMovie)
   }
 
   const handleDeleteLike = () => {
     setIsLiked(false)
+    const searchMovie = savedMovies.find(item => item.movieId === movie.id)
+    deleteSavedMoivies(searchMovie._id)
+  }
+
+  const handleDeleteCard = () => {
+    deleteSavedMoivies(movie._id)
   }
 
   const handlePictureClick = () => {
@@ -23,7 +46,7 @@ function MoviesCard({movie}) {
   return (
     <div className="card">
       <img className="card__picture"
-        src={`https://api.nomoreparties.co${movie.image.url}`}
+        src={isSaved ? movie.image : `https://api.nomoreparties.co${movie.image.url}`}
         alt={`Постер фильма "${movie.nameRU}"`}
         onClick={handlePictureClick}/>
       <div className="card__description">
@@ -31,9 +54,7 @@ function MoviesCard({movie}) {
         {pathname === "/movies" ?
           isLiked ? <button onClick={handleDeleteLike} className="card__like-button card__like-button_liked" /> :
             <button onClick={handleLike} className="card__like-button" />
-          :
-          <button className="card__delete-button"/>
-        }
+          : isSaved ? <button className="card__delete-button" onClick={handleDeleteCard} /> : <></> }
         <p className="card__duration">{timeCalculating}</p>
       </div>
     </div>

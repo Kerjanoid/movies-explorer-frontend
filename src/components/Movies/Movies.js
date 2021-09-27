@@ -10,14 +10,16 @@ import { useState, useEffect } from "react";
 function Movies({ loggedIn,
   isSideBarOpened,
   handleSideBarState,
-  isLiked,
   handleLikeClick,
   movies,
   searchMovies,
   screenWidth,
   handleChangeСheckbox,
   checked,
-  isLoading }) {
+  isLoading,
+  saveMovies,
+  deleteSavedMoivies,
+  savedMovies }) {
 
   const [showingMoviesCount, setShowingMoviesCount] = useState(0)
   const [addingMoviesCount, setAddingMoviesCount] = useState(0)
@@ -48,7 +50,8 @@ function Movies({ loggedIn,
 
   return (
     <>
-      <Header loggedIn={loggedIn}
+      <Header
+        loggedIn={loggedIn}
         isSideBarOpened={isSideBarOpened}
         handleSideBarState={handleSideBarState}
         screenWidth={screenWidth} />
@@ -56,14 +59,19 @@ function Movies({ loggedIn,
         <SearchForm
           searchMovies={searchMovies}
           handleChangeСheckbox={handleChangeСheckbox}
-          checked={checked} />
+          checked={checked}
+          isSaved={false} />
         {isLoading ?
           <Preloader /> :
-          <MoviesCardList isLiked={isLiked}
+          <MoviesCardList
             handleLikeClick={handleLikeClick}
             showMoreMovies={showMoreMovies}
             moviesVisibleCount={moviesVisibleCount}
-            movies={movies} />}
+            movies={movies}
+            saveMovies={saveMovies}
+            deleteSavedMoivies={deleteSavedMoivies}
+            savedMovies={savedMovies}
+            isSaved={false} />}
       </main>
       <Footer />
       <SideBar isSideBarOpened={isSideBarOpened}

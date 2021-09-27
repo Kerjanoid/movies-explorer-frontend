@@ -51,7 +51,7 @@ class MainApi {
         authorization: `Bearer ${localStorage.getItem("token")}`,
       }
     })
-      .then(this._checkResponse)
+    .then(this._checkResponse)
   }
 
   editProfile = (name, email) => {
@@ -63,7 +63,7 @@ class MainApi {
       },
       body: JSON.stringify({name, email})
     })
-      .then(this._checkResponse)
+    .then(this._checkResponse)
   }
 
   saveMovies = (movie) => {
@@ -85,9 +85,9 @@ class MainApi {
         movieId: String(movie.movieId),
         nameRU: movie.nameRU,
         nameEN: movie.nameEN,
+      })
     })
-      .then(this._checkResponse)
-    })
+    .then(this._checkResponse)
   }
 
   getMovies = () => {
@@ -97,8 +97,8 @@ class MainApi {
         "Content-Type": "application/json",
         authorization: `Bearer ${localStorage.getItem("token")}`,
       }
-      .then(this._checkResponse)
     })
+    .then(this._checkResponse)
   }
 
   deleteSavedMovies = (id) => {
@@ -108,8 +108,8 @@ class MainApi {
         "Content-Type": "application/json",
         authorization: `Bearer ${localStorage.getItem("token")}`,
       }
-      .then(this._checkResponse)
     })
+    .then(this._checkResponse)
   }
 }
 

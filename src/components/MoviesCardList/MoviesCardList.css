@@ -42,10 +42,6 @@
   opacity: 0.8;
 }
 
-.cards__more-button_disabled {
-  display: none;
-}
-
 @media screen and (max-width: 1297px) {
   .cards__container {
     grid-template-columns: repeat(3, 1fr);
