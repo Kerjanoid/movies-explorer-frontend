@@ -24,9 +24,10 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(true);
   const [isSideBarOpened, setIsSideBarOpened] = useState(false);
   const [movies, setMovies] = useState([]);
-  const [foundMovies, setFoundMovies] = useState([]);
   const [savedMovies, setSavedMovies] = useState([]);
+  const [savedMoviesId, setSavedMoviesId] = useState([]);
   const [savedFoundMovies, setSavedFoundMovies] = useState([]);
+  const [isNothingFound, setIsNothingFound] = useState(false);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [currentUser, setCurrentUser] = useState({});
   const [waiting, setWaiting] = useState(null);
@@ -52,7 +53,14 @@ function App() {
       .then(userData => {
         setCurrentUser(userData);
       })
-      .catch(err => console.log(err))}
+      .catch(err => console.log(err));
+      MainApi.getMovies()
+      .then(moviesData => {
+        setSavedMovies(moviesData);
+        setSavedMoviesId(moviesData.map((movie) => movie.movieId));
+      })
+      .catch(err => console.log(err));}
+      setIsNothingFound(false);
   }, [loggedIn]);
 
   const tokenCheck = () => {
@@ -67,16 +75,8 @@ function App() {
   };
 
   const initialMoviesCheck = () => {
-    const initialMovies = JSON.parse(localStorage.getItem("initialMovies"));
-    const savedMovies = JSON.parse(localStorage.getItem("savedMovies"));
-    if (initialMovies) {
-      setMovies(initialMovies);
-      const initialFoundMovies = JSON.parse(localStorage.getItem("foundMovies"));
-      setFoundMovies(initialFoundMovies);
-        if (savedMovies) {
-          setSavedMovies(savedMovies);
-        } else {setSavedMovies([])}
-    }
+    const initialMovies = localStorage.getItem("foundMovies");
+    initialMovies ? setMovies(JSON.parse(initialMovies)) : setMovies([])
   };
 
   const handleRegister = (name, email, password) => {
@@ -150,68 +150,65 @@ function App() {
     )
   };
 
-  const searchMovies = (searchText) => {
-    const initialMovies = JSON.parse(localStorage.getItem("initialMovies"))
-    setIsLoading(true)
-    if (!initialMovies) {
-      MoviesApi.getMovies()
-        .then(moviesData => {
-          if (movies.length === 0) {
-            const foundResult = moviesData.filter(movie => movie.nameRU.toLowerCase().indexOf(searchText.toLowerCase()) > -1);
-            if (checked) {
-              const foundShortResult = foundResult.filter(movie => movie.duration <= 40);
-              setFoundMovies(foundShortResult);
-              setMovies(moviesData);
-              localStorage.setItem("initialMovies", JSON.stringify(moviesData));
-              localStorage.setItem("foundMovies", JSON.stringify(foundShortResult));
-            } else {
-              const foundNotShortResult = foundResult.filter(movie => movie.duration > 40);
-              setFoundMovies(foundNotShortResult);
-              setMovies(moviesData);
-              localStorage.setItem("initialMovies", JSON.stringify(moviesData));
-              localStorage.setItem("foundMovies", JSON.stringify(foundNotShortResult));
-            }
-          }
-        })
-        .catch(err => console.log(err))
+  const foundShort = (moviesArray) => {
+    if (checked) {
+      moviesArray.filter(movie => movie.duration <= 40);
     } else {
-      const foundResult = initialMovies.filter(movie => movie.nameRU.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
-      if (checked) {
-        const foundShortResult = foundResult.filter(movie => movie.duration <= 40);
-        setFoundMovies(foundShortResult);
-        localStorage.setItem("foundMovies", JSON.stringify(foundShortResult));
+      moviesArray.filter(movie => movie.duration > 40);
+    }
+  }
+
+  const searchMovies = (moviesArray, searchText) => {
+    if (moviesArray.length) {
+      if (moviesArray[0].owner) {
+        const foundResult = moviesArray.filter(movie => movie.nameRU.toLowerCase().includes(searchText.toLowerCase()));
+        foundShort(foundResult)
       } else {
-        const foundNotShortResult = foundResult.filter(movie => movie.duration > 40);
-        setFoundMovies(foundNotShortResult);
-        localStorage.setItem("foundMovies", JSON.stringify(foundNotShortResult));
+        moviesArray.filter(movie => movie.nameRU.toLowerCase().includes(searchText.toLowerCase()));
       }
     }
+  }
+
+  const handleSearchMovies = (searchText) => {
+    setIsLoading(true);
+    setIsNothingFound(false);
+    let movies = JSON.parse(localStorage.getItem("movies"));
+      if (!movies) {
+        MoviesApi.getMovies()
+          .then(moviesData => {
+            localStorage.setItem("movies", JSON.stringify(moviesData));
+            movies = JSON.parse(localStorage.getItem("movies"));
+          })
+          .catch(err => console.log(err))
+      }
+    const foundMovies = searchMovies(movies, searchText);
+    localStorage.setItem("foundMovies", JSON.stringify(foundMovies));
     setTimeout(() => {setIsLoading(false)}, 2000);
   };
 
-  const saveMovies = (movie) => {
+  const handleSaveMovie = (movie) => {
     MainApi.saveMovies(movie)
       .then(res => {
-        const movies = [...savedMovies, res];
-        localStorage.setItem("savedMovies", JSON.stringify(movies));
-        setSavedMovies(prev => [...prev, res]);
+        setSavedMoviesId([...savedMoviesId, movie.id]);
+        setSavedMovies([...savedMovies, res]);
       })
       .catch(err => console.log(err))
   };
 
-  const filterMoviesById = (collection, id) => {
-    return collection.filter(item => { return item._id !== id });
-  };
-
-  const deleteSavedMoivies = (id) => {
-    MainApi.deleteSavedMovies(id)
-      .then(() => {
-        const movies = filterMoviesById(savedMovies, id);
-        setSavedMovies(movies);
-        localStorage.setItem("savedMovies", JSON.stringify(movies));
+  const handleDeleteMovie = (movie) => {
+    let movieId = savedMovies.filter((item) => item.movieId === movie.id)[0];
+    if (movieId) {
+      movieId = movieId._id;
+    }
+    MainApi.deleteSavedMovies(movie.owner ? movie._id : movieId)
+      .then((res) => {
+        setSavedMovies(savedMovies.filter((item) => item._id !== res._id));
+        setSavedMoviesId(savedMoviesId.filter((id) => id !== res.movieId));
       })
-      .catch(err => console.log(err))
-  };
+      .catch((err) => {
+        console.error(err);
+      });
+  }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -240,10 +237,10 @@ function App() {
           loggedIn={loggedIn}
           component={SavedMovies}
           isSideBarOpened={isSideBarOpened}
-          movies={savedMovies}
+          movies={savedFoundMovies}
           handleSideBarState={handleSideBarState}
           screenWidth={screenWidth}
-          searchMovies={searchMovies}
+          searchMovies={searchSavedMovies}
           handleChangeСheckbox={handleChangeСheckbox}
           checked={checked}
           isLoading={isLoading}

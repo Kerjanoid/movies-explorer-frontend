@@ -16,14 +16,14 @@ function MoviesCardList({ moviesVisibleCount, showMoreMovies, movies, saveMovies
             deleteSavedMoivies={deleteSavedMoivies}
             isSaved={isSaved}
             savedMovies={savedMovies} />
-        )) : savedMovies.map(movie => (
+        )) : movies.map(movie => (
           <MoviesCard
             movie={movie}
             key={movie.movieId}
             saveMovies={saveMovies}
             deleteSavedMoivies={deleteSavedMoivies}
             isSaved={isSaved}
-            savedMovies={savedMovies} />
+            savedMovies={movies} />
         ))}
       </div>
       {pathname === "/movies" ?
