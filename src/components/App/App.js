@@ -14,16 +14,20 @@ import MoviesApi from "../../utils/MoviesApi";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute"
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 
+// TODO:
+// 1. Запилить состояния радиокнопки
+// 2. Запилить фильтрацию по duration радиокнопкой
+// 3. Запилить работу с компонентом SavedMovies
+// 4. Запилить прелоадер при поиске фильмов
+// 5. Запилить ошибку поиска, если ничего не найдено
+
 function App() {
   const [loggedIn, setLoggedIn] = useState(true);
   const [isSideBarOpened, setIsSideBarOpened] = useState(false);
   const [movies, setMovies] = useState([]);
+  const [foundMovies, setFoundMovies] = useState([]);
   const [savedMovies, setSavedMovies] = useState([]);
-  const [savedMoviesId, setSavedMoviesId] = useState([]);
-  const [foundSavedMovies, setFoundSavedMovies] = useState([]);
-  const [isOnlyCheckedSearch, setIsOnlyCheckedSearch] = useState(false);
-  const [isNothingFound, setIsNothingFound] = useState(false);
-  const [savedKeyWord, setSavedKeyWord] = useState("");
+  const [savedFoundMovies, setSavedFoundMovies] = useState([]);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [currentUser, setCurrentUser] = useState({});
   const [waiting, setWaiting] = useState(null);
@@ -52,31 +56,8 @@ function App() {
       .then(userData => {
         setCurrentUser(userData);
       })
-      .catch(err => console.log(err));
-      MainApi.getMovies()
-      .then(moviesData => {
-        setSavedMovies(moviesData);
-        setSavedMoviesId(moviesData.map((movie) => movie.movieId));
-      })
-      .catch(err => console.log(err));}
-      setIsNothingFound(false);
+      .catch(err => console.log(err))}
   }, [loggedIn]);
-
-  useEffect(() => {
-    if (savedKeyWord) {
-      handleSearchSavedMovies(savedKeyWord);
-    }
-  }, [savedMovies]);
-
-  useEffect(() => {
-    if (savedMovies.length || foundSavedMovies.length) {
-      handleSearchSavedMovies(savedKeyWord);
-    }
-    if (localStorage.getItem("foundMovies")) {
-      const foundMovies = JSON.parse(localStorage.getItem("foundMovies"))
-      foundShort(foundMovies);
-    }
-  }, [checked]);
 
   const tokenCheck = () => {
     const token = localStorage.getItem("token");
@@ -211,39 +192,29 @@ function App() {
     setTimeout(() => {setIsLoading(false)}, 1500);
   };
 
-  const handleSearchSavedMovies = (searchText) => {
-    setIsOnlyCheckedSearch(false);
-    if (!searchText) {
-      setIsOnlyCheckedSearch(true);
-    }
-    setSavedKeyWord(searchText);
-    const movies = searchMovies(savedMovies,searchText );
-    setFoundSavedMovies(movies);
-  };
-
-  const handleSaveMovie = (movie) => {
+  const saveMovies = (movie) => {
     MainApi.saveMovies(movie)
       .then(res => {
-        setSavedMoviesId([...savedMoviesId, movie.id]);
-        setSavedMovies([...savedMovies, res]);
+        const movies = [...savedMovies, res];
+        localStorage.setItem("savedMovies", JSON.stringify(movies));
+        setSavedMovies(prev => [...prev, res]);
       })
       .catch(err => console.log(err))
   };
 
-  const handleDeleteMovie = (movie) => {
-    let movieId = savedMovies.filter((item) => item.movieId === movie.id)[0];
-    if (movieId) {
-      movieId = movieId._id;
-    }
-    MainApi.deleteSavedMovies(movie.owner ? movie._id : movieId)
-      .then((res) => {
-        setSavedMovies(savedMovies.filter((item) => item._id !== res._id));
-        setSavedMoviesId(savedMoviesId.filter((id) => id !== res.movieId));
+  const filterMoviesById = (collection, id) => {
+    return collection.filter(item => { return item._id !== id });
+  };
+
+  const deleteSavedMoivies = (id) => {
+    MainApi.deleteSavedMovies(id)
+      .then(() => {
+        const movies = filterMoviesById(savedMovies, id);
+        setSavedMovies(movies);
+        localStorage.setItem("savedMovies", JSON.stringify(movies));
       })
-      .catch((err) => {
-        console.error(err);
-      });
-  }
+      .catch(err => console.log(err))
+  };
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -260,32 +231,27 @@ function App() {
           isSideBarOpened={isSideBarOpened}
           handleSideBarState={handleSideBarState}
           screenWidth={screenWidth}
-          movies={movies}
-          handleSearchMovies={handleSearchMovies}
+          movies={foundMovies}
+          searchMovies={searchMovies}
           handleChangeСheckbox={handleChangeСheckbox}
-          savedMoviesId={savedMoviesId}
           checked={checked}
           isLoading={isLoading}
-          handleSaveMovie={handleSaveMovie}
-          handleDeleteMovie={handleDeleteMovie}
+          saveMovies={saveMovies}
+          deleteSavedMoivies={deleteSavedMoivies}
           savedMovies={savedMovies} />
         <ProtectedRoute exact path="/saved-movies"
           loggedIn={loggedIn}
           component={SavedMovies}
           isSideBarOpened={isSideBarOpened}
-          movies={
-            savedKeyWord || isOnlyCheckedSearch
-              ? foundSavedMovies.length
-                ? foundSavedMovies
-                : "NotFound"
-              : savedMovies
-          }
+          movies={savedMovies}
           handleSideBarState={handleSideBarState}
           screenWidth={screenWidth}
+          searchMovies={searchMovies}
           handleChangeСheckbox={handleChangeСheckbox}
           checked={checked}
           isLoading={isLoading}
-          handleDeleteMovie={handleDeleteMovie} />
+          deleteSavedMoivies={deleteSavedMoivies}
+          savedMovies={savedMovies} />
         <ProtectedRoute exact path="/profile"
           loggedIn={loggedIn}
           component={Profile}
