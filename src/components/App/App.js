@@ -12,6 +12,7 @@ import Profile from "../Profile/Profile";
 import MainApi from "../../utils/MainApi";
 import MoviesApi from "../../utils/MoviesApi";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute"
+import MoviesCardList from "../MoviesCardList/MoviesCardList";
 
 // TODO:
 // 1. Запилить состояния радиокнопки
@@ -37,8 +38,11 @@ function App() {
 
   useEffect(() => {
     tokenCheck();
-    initialMoviesCheck();
   }, []);
+
+  useEffect(() => {
+    initialMoviesCheck();
+  }, [isLoading]);
 
   useEffect(() => {
     window.addEventListener("resize", () => setTimeout(() => {
@@ -63,19 +67,26 @@ function App() {
           setLoggedIn(true);
         })
         .catch(err => console.log(err))
-    } else {setLoggedIn(false)}
+    } else {
+      setLoggedIn(false)
+    }
   };
 
   const initialMoviesCheck = () => {
     const initialMovies = JSON.parse(localStorage.getItem("initialMovies"));
-    const savedMovies = JSON.parse(localStorage.getItem("savedMovies"));
+    // const savedMovies = JSON.parse(localStorage.getItem("savedMovies"));
     if (initialMovies) {
       setMovies(initialMovies);
       const initialFoundMovies = JSON.parse(localStorage.getItem("foundMovies"));
       setFoundMovies(initialFoundMovies);
-        if (savedMovies) {
-          setSavedMovies(savedMovies);
-        } else {setSavedMovies([])}
+        // if (savedMovies) {
+        //   setSavedMovies(savedMovies);
+        // } else {
+        //   setSavedMovies([])
+        // }
+    } else {
+      setMovies([]);
+      setFoundMovies([]);
     }
   };
 
@@ -150,6 +161,15 @@ function App() {
     )
   };
 
+  const searchShot = (moviesArray, searchText) => {
+    const foundResult = moviesArray.filter(movie => movie.nameRU.toLowerCase().indexOf(searchText.toLowerCase()) > -1);
+    if (checked) {
+      return foundResult.filter(movie => movie.duration <= 40);
+    } else {
+      return foundResult;
+    }
+  }
+
   const searchMovies = (searchText) => {
     const initialMovies = JSON.parse(localStorage.getItem("initialMovies"))
     setIsLoading(true)
@@ -157,36 +177,19 @@ function App() {
       MoviesApi.getMovies()
         .then(moviesData => {
           if (movies.length === 0) {
-            const foundResult = moviesData.filter(movie => movie.nameRU.toLowerCase().indexOf(searchText.toLowerCase()) > -1);
-            if (checked) {
-              const foundShortResult = foundResult.filter(movie => movie.duration <= 40);
-              setFoundMovies(foundShortResult);
-              setMovies(moviesData);
-              localStorage.setItem("initialMovies", JSON.stringify(moviesData));
-              localStorage.setItem("foundMovies", JSON.stringify(foundShortResult));
-            } else {
-              const foundNotShortResult = foundResult.filter(movie => movie.duration > 40);
-              setFoundMovies(foundNotShortResult);
-              setMovies(moviesData);
-              localStorage.setItem("initialMovies", JSON.stringify(moviesData));
-              localStorage.setItem("foundMovies", JSON.stringify(foundNotShortResult));
-            }
+            const foundResult = searchShot(moviesData, searchText)
+            setFoundMovies(foundResult);
+            setMovies(moviesData);
+            localStorage.setItem("initialMovies", JSON.stringify(moviesData));
+            localStorage.setItem("foundMovies", JSON.stringify(foundResult));
           }
         })
         .catch(err => console.log(err))
     } else {
-      const foundResult = initialMovies.filter(movie => movie.nameRU.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
-      if (checked) {
-        const foundShortResult = foundResult.filter(movie => movie.duration <= 40);
-        setFoundMovies(foundShortResult);
-        localStorage.setItem("foundMovies", JSON.stringify(foundShortResult));
-      } else {
-        const foundNotShortResult = foundResult.filter(movie => movie.duration > 40);
-        setFoundMovies(foundNotShortResult);
-        localStorage.setItem("foundMovies", JSON.stringify(foundNotShortResult));
-      }
+      const foundResult = searchShot(initialMovies, searchText)
+      localStorage.setItem("foundMovies", JSON.stringify(foundResult));
     }
-    setTimeout(() => {setIsLoading(false)}, 2000);
+    setTimeout(() => {setIsLoading(false)}, 1500);
   };
 
   const saveMovies = (movie) => {
