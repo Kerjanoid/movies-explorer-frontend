@@ -12,7 +12,7 @@ function Movies({ loggedIn,
   handleSideBarState,
   handleLikeClick,
   movies,
-  searchMovies,
+  handleSearchMovies,
   screenWidth,
   handleChangeСheckbox,
   checked,
@@ -57,7 +57,7 @@ function Movies({ loggedIn,
         screenWidth={screenWidth} />
       <main className="content">
         <SearchForm
-          searchMovies={searchMovies}
+          handleSearchMovies={handleSearchMovies}
           handleChangeСheckbox={handleChangeСheckbox}
           checked={checked}
           isSaved={false} />

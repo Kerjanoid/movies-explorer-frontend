@@ -2,7 +2,7 @@ import "./SearchForm.css";
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox"
 import { useState } from "react";
 
-function SearchForm({ searchMovies, handleChangeСheckbox, checked }) {
+function SearchForm({ handleSearchMovies, handleChangeСheckbox, checked }) {
   const [inputText, setInputText] = useState("")
 
   const handleChange = (e) => {
@@ -11,7 +11,7 @@ function SearchForm({ searchMovies, handleChangeСheckbox, checked }) {
 
   const handleSearcMovies = (e) => {
     e.preventDefault();
-    searchMovies(inputText)
+    handleSearchMovies(inputText)
     setInputText("")
   }
 

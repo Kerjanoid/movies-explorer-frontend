@@ -19,7 +19,10 @@ function App() {
   const [movies, setMovies] = useState([]);
   const [savedMovies, setSavedMovies] = useState([]);
   const [savedMoviesId, setSavedMoviesId] = useState([]);
+  const [foundSavedMovies, setFoundSavedMovies] = useState([]);
+  const [isOnlyCheckedSearch, setIsOnlyCheckedSearch] = useState(false);
   const [isNothingFound, setIsNothingFound] = useState(false);
+  const [savedKeyWord, setSavedKeyWord] = useState("");
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [currentUser, setCurrentUser] = useState({});
   const [waiting, setWaiting] = useState(null);
@@ -54,6 +57,22 @@ function App() {
       .catch(err => console.log(err));}
       setIsNothingFound(false);
   }, [loggedIn]);
+
+  useEffect(() => {
+    if (savedKeyWord) {
+      handleSearchSavedMovies(savedKeyWord);
+    }
+  }, [savedMovies]);
+
+  useEffect(() => {
+    if (savedMovies.length || foundSavedMovies.length) {
+      handleSearchSavedMovies(savedKeyWord);
+    }
+    if (localStorage.getItem("foundMovies")) {
+      const foundMovies = JSON.parse(localStorage.getItem("foundMovies"))
+      foundShort(foundMovies);
+    }
+  }, [checked]);
 
   const tokenCheck = () => {
     const token = localStorage.getItem("token");
@@ -144,38 +163,47 @@ function App() {
 
   const foundShort = (moviesArray) => {
     if (checked) {
-      moviesArray.filter(movie => movie.duration <= 40);
+      return moviesArray.filter(movie => movie.duration <= 40);
     } else {
-      moviesArray.filter(movie => movie.duration > 40);
+      return moviesArray;
     }
   }
 
   const searchMovies = (moviesArray, searchText) => {
     if (moviesArray.length) {
+      const foundResult = moviesArray.filter(movie => movie.nameRU.toLowerCase().indexOf(searchText.toLowerCase()) > -1);
       if (moviesArray[0].owner) {
-        const foundResult = moviesArray.filter(movie => movie.nameRU.toLowerCase().includes(searchText.toLowerCase()));
         foundShort(foundResult)
       } else {
-        moviesArray.filter(movie => movie.nameRU.toLowerCase().includes(searchText.toLowerCase()));
+        return moviesArray.filter(movie => movie.nameRU.toLowerCase().indexOf(searchText.toLowerCase()) > -1);
       }
     }
   }
 
-  const handleSearchMovies = (searchText) => {
+  const handleSearchMovies = async (searchText) => {
     setIsLoading(true);
     setIsNothingFound(false);
-    let movies = JSON.parse(localStorage.getItem("movies"));
-      if (!movies) {
-        MoviesApi.getMovies()
-          .then(moviesData => {
-            localStorage.setItem("movies", JSON.stringify(moviesData));
-            movies = JSON.parse(localStorage.getItem("movies"));
-          })
-          .catch(err => console.log(err))
-      }
-    const foundMovies = searchMovies(movies, searchText);
-    localStorage.setItem("foundMovies", JSON.stringify(foundMovies));
+    try {
+      let movies = JSON.parse(localStorage.getItem("movies"));
+        if (!movies) {
+          const moviesData = await MoviesApi.getMovies();
+          localStorage.setItem("movies", JSON.stringify(moviesData));
+          movies = JSON.parse(localStorage.getItem("movies"));
+        }
+      const foundMovies = searchMovies(movies, searchText);
+      localStorage.setItem("foundMovies", JSON.stringify(foundMovies));}
+    catch (err) {console.log(err);}
     setTimeout(() => {setIsLoading(false)}, 2000);
+  };
+
+  const handleSearchSavedMovies = (searchText) => {
+    setIsOnlyCheckedSearch(false);
+    if (!searchText) {
+      setIsOnlyCheckedSearch(true);
+    }
+    setSavedKeyWord(searchText);
+    const movies = searchMovies(savedMovies,searchText );
+    setFoundSavedMovies(movies);
   };
 
   const handleSaveMovie = (movie) => {
@@ -217,27 +245,32 @@ function App() {
           isSideBarOpened={isSideBarOpened}
           handleSideBarState={handleSideBarState}
           screenWidth={screenWidth}
-          movies={foundMovies}
-          searchMovies={searchMovies}
+          movies={movies}
+          handleSearchMovies={handleSearchMovies}
           handleChangeСheckbox={handleChangeСheckbox}
+          savedMoviesId={savedMoviesId}
           checked={checked}
           isLoading={isLoading}
-          saveMovies={saveMovies}
-          deleteSavedMoivies={deleteSavedMoivies}
+          handleSaveMovie={handleSaveMovie}
+          handleDeleteMovie={handleDeleteMovie}
           savedMovies={savedMovies} />
         <ProtectedRoute exact path="/saved-movies"
           loggedIn={loggedIn}
           component={SavedMovies}
           isSideBarOpened={isSideBarOpened}
-          movies={savedFoundMovies}
+          movies={
+            savedKeyWord || isOnlyCheckedSearch
+              ? foundSavedMovies.length
+                ? foundSavedMovies
+                : "NotFound"
+              : savedMovies
+          }
           handleSideBarState={handleSideBarState}
           screenWidth={screenWidth}
-          searchMovies={searchSavedMovies}
           handleChangeСheckbox={handleChangeСheckbox}
           checked={checked}
           isLoading={isLoading}
-          deleteSavedMoivies={deleteSavedMoivies}
-          savedMovies={savedMovies} />
+          handleDeleteMovie={handleDeleteMovie} />
         <ProtectedRoute exact path="/profile"
           loggedIn={loggedIn}
           component={Profile}
