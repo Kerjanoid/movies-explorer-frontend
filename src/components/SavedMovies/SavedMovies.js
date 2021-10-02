@@ -5,24 +5,22 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList"
 import Footer from "../Footer/Footer";
 import SideBar from "../SideBar/SideBar";
 import Preloader from "../Preloader/Preloader";
-import { useState, useEffect } from "react";
+import NothingFound from "../NothingFound/NothingFound";
 
 function SavedMovies({
   loggedIn,
   isSideBarOpened,
   handleSideBarState,
-  movies,
   screenWidth,
   handleLikeClick,
   searchMovies,
   handleChangeСheckbox,
   checked,
   isLoading,
-  isSaved,
   deleteSavedMoivies,
-  savedMovies }) {
-
-  const moviesVisibleCount = movies;
+  savedMovies,
+  movies,
+  nothingFoundText }) {
 
   return (
     <>
@@ -38,13 +36,16 @@ function SavedMovies({
           isSaved={true} />
         {isLoading ?
           <Preloader /> :
-        <MoviesCardList
-          handleLikeClick={handleLikeClick}
-          deleteSavedMoivies={deleteSavedMoivies}
-          movies={movies}
-          moviesVisibleCount={moviesVisibleCount}
-          savedMovies={savedMovies}
-          isSaved={true} />}
+          (movies.length === 0) ?
+            <NothingFound
+              nothingFoundText={nothingFoundText} /> :
+            <MoviesCardList
+              handleLikeClick={handleLikeClick}
+              deleteSavedMoivies={deleteSavedMoivies}
+              movies={movies}
+              moviesVisibleCount={movies}
+              savedMovies={savedMovies}
+              isSaved={true} />}
       </main>
       <Footer />
       <SideBar isSideBarOpened={isSideBarOpened}

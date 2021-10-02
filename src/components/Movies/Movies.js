@@ -5,6 +5,7 @@ import Preloader from "../Preloader/Preloader";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Footer from "../Footer/Footer";
 import SideBar from "../SideBar/SideBar";
+import NothingFound from "../NothingFound/NothingFound";
 import { useState, useEffect } from "react";
 
 function Movies({ loggedIn,
@@ -19,12 +20,12 @@ function Movies({ loggedIn,
   isLoading,
   saveMovies,
   deleteSavedMoivies,
-  savedMovies }) {
+  savedMovies,
+  nothingFoundText }) {
 
   const [showingMoviesCount, setShowingMoviesCount] = useState(0)
   const [addingMoviesCount, setAddingMoviesCount] = useState(0)
 
-// Начальное количество карточек фильмов на экране и количество карточек фильмов, добавляемых при нажании на кнопку "Ещё"
   useEffect(() => {
     if (screenWidth > 1297) {
       setShowingMoviesCount(16);
@@ -41,7 +42,6 @@ function Movies({ loggedIn,
     }}
   , [screenWidth]);
 
-// Массив карточке после нажания кнопки "Ещё"
   const moviesVisibleCount = movies.slice(0, showingMoviesCount);
 
   function showMoreMovies() {
@@ -63,15 +63,18 @@ function Movies({ loggedIn,
           isSaved={false} />
         {isLoading ?
           <Preloader /> :
-          <MoviesCardList
-            handleLikeClick={handleLikeClick}
-            showMoreMovies={showMoreMovies}
-            moviesVisibleCount={moviesVisibleCount}
-            movies={movies}
-            saveMovies={saveMovies}
-            deleteSavedMoivies={deleteSavedMoivies}
-            savedMovies={savedMovies}
-            isSaved={false} />}
+          (movies.length === 0) ?
+            <NothingFound
+              nothingFoundText={nothingFoundText} /> :
+            <MoviesCardList
+              handleLikeClick={handleLikeClick}
+              showMoreMovies={showMoreMovies}
+              moviesVisibleCount={moviesVisibleCount}
+              movies={movies}
+              saveMovies={saveMovies}
+              deleteSavedMoivies={deleteSavedMoivies}
+              savedMovies={savedMovies}
+              isSaved={false} />}
       </main>
       <Footer />
       <SideBar isSideBarOpened={isSideBarOpened}

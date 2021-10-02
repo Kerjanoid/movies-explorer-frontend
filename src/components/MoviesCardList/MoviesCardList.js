@@ -16,7 +16,7 @@ function MoviesCardList({ moviesVisibleCount, showMoreMovies, movies, saveMovies
             deleteSavedMoivies={deleteSavedMoivies}
             isSaved={isSaved}
             savedMovies={savedMovies} />
-        )) : savedMovies.map(movie => (
+        )) : moviesVisibleCount.map(movie => (
           <MoviesCard
             movie={movie}
             key={movie.movieId}

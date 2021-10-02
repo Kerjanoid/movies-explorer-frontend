@@ -1,5 +1,5 @@
 import './MoviesCard.css';
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { CurrentUserContext } from "../../contexts/CurrenUserContext";
 
@@ -8,18 +8,22 @@ function MoviesCard({ movie, saveMovies, deleteSavedMoivies, savedMovies, isSave
   const [isLiked, setIsLiked] = useState(false);
   const currentUser = useContext(CurrentUserContext);
 
+  useEffect(() => {
+    checkIsSaved()
+  }, [])
+
   const thisMovie = {
-    country: movie.country || " ",
-    director: movie.director || " ",
+    country: movie.country || "Нет данных",
+    director: movie.director || "Нет данных",
     duration: movie.duration || 0,
-    year: movie.year || " ",
+    year: movie.year || "Нет данных",
     description: movie.description || " ",
     image: isSaved ? movie.image : `https://api.nomoreparties.co${movie.image.url}`,
     trailer: isSaved ? movie.trailer : movie.trailerLink,
     thumbnail:  isSaved ? movie.thumbnail : `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`,
     movieId: isSaved ? movie._id : movie.id,
-    nameRU: movie.nameRU || " ",
-    nameEN: movie.nameEN || " ",
+    nameRU: movie.nameRU || "Нет данных",
+    nameEN: movie.nameEN || "Нет данных",
   }
 
   const handleLike = () => {
@@ -31,6 +35,11 @@ function MoviesCard({ movie, saveMovies, deleteSavedMoivies, savedMovies, isSave
     setIsLiked(false)
     const searchMovie = savedMovies.find(item => item.movieId === movie.id)
     deleteSavedMoivies(searchMovie._id)
+  }
+
+  const checkIsSaved = () => {
+    const searchMovie = savedMovies.find(item => item.movieId === movie.id)
+    searchMovie ? setIsLiked(true) : setIsLiked(false)
   }
 
   const handleDeleteCard = () => {

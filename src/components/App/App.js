@@ -11,15 +11,7 @@ import Login from "../Login/Login";
 import Profile from "../Profile/Profile";
 import MainApi from "../../utils/MainApi";
 import MoviesApi from "../../utils/MoviesApi";
-import ProtectedRoute from "../ProtectedRoute/ProtectedRoute"
-import MoviesCardList from "../MoviesCardList/MoviesCardList";
-
-// TODO:
-// 1. Запилить состояния радиокнопки
-// 2. Запилить фильтрацию по duration радиокнопкой
-// 3. Запилить работу с компонентом SavedMovies
-// 4. Запилить прелоадер при поиске фильмов
-// 5. Запилить ошибку поиска, если ничего не найдено
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(true);
@@ -34,6 +26,7 @@ function App() {
   const [disableButton, setDisableButton] = useState(false);
   const [checked, setChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [nothingFoundText, setNothingFoundText] = useState("");
   const history = useHistory();
 
   useEffect(() => {
@@ -42,7 +35,7 @@ function App() {
 
   useEffect(() => {
     initialMoviesCheck();
-  }, [isLoading]);
+  }, [isLoading, loggedIn]);
 
   useEffect(() => {
     window.addEventListener("resize", () => setTimeout(() => {
@@ -74,16 +67,18 @@ function App() {
 
   const initialMoviesCheck = () => {
     const initialMovies = JSON.parse(localStorage.getItem("initialMovies"));
-    // const savedMovies = JSON.parse(localStorage.getItem("savedMovies"));
+    const savedMovies = JSON.parse(localStorage.getItem("savedMovies"));
+    const savedFoundMovies = JSON.parse(localStorage.getItem("savedFoundMovies"));
     if (initialMovies) {
       setMovies(initialMovies);
       const initialFoundMovies = JSON.parse(localStorage.getItem("foundMovies"));
       setFoundMovies(initialFoundMovies);
-        // if (savedMovies) {
-        //   setSavedMovies(savedMovies);
-        // } else {
-        //   setSavedMovies([])
-        // }
+      setSavedMovies(savedMovies);
+      if (savedFoundMovies) {
+        setSavedFoundMovies(savedFoundMovies);}
+      else {
+        setSavedFoundMovies(savedMovies);
+      }
     } else {
       setMovies([]);
       setFoundMovies([]);
@@ -173,6 +168,7 @@ function App() {
   const searchMovies = (searchText) => {
     const initialMovies = JSON.parse(localStorage.getItem("initialMovies"))
     setIsLoading(true)
+    setNothingFoundText("Ничего не найдено")
     if (!initialMovies) {
       MoviesApi.getMovies()
         .then(moviesData => {
@@ -184,7 +180,19 @@ function App() {
             localStorage.setItem("foundMovies", JSON.stringify(foundResult));
           }
         })
-        .catch(err => console.log(err))
+        .catch(err => {console.log(err)
+        setNothingFoundText("Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз")})
+      MainApi.getMovies()
+      .then(moviesData => {
+        if (movies.length === 0) {
+          const foundResult = searchShot(moviesData, searchText)
+          setSavedFoundMovies(foundResult);
+          setSavedMovies(moviesData);
+          localStorage.setItem("savedMovies", JSON.stringify(moviesData));
+          localStorage.setItem("savedFoundMovies", JSON.stringify(foundResult));
+        }
+      })
+      .catch(err => console.log(err))
     } else {
       const foundResult = searchShot(initialMovies, searchText)
       localStorage.setItem("foundMovies", JSON.stringify(foundResult));
@@ -197,9 +205,21 @@ function App() {
       .then(res => {
         const movies = [...savedMovies, res];
         localStorage.setItem("savedMovies", JSON.stringify(movies));
-        setSavedMovies(prev => [...prev, res]);
+        localStorage.setItem("savedFoundMovies", JSON.stringify(movies));
+        setSavedMovies(movies);
+        setSavedFoundMovies(movies);
       })
       .catch(err => console.log(err))
+  };
+
+  const searchSavedMovies = (searchText) => {
+    const initialSavedMovies = JSON.parse(localStorage.getItem("savedMovies"))
+    setIsLoading(true)
+    const foundResult = searchShot(initialSavedMovies, searchText)
+    localStorage.setItem("savedFoundMovies", JSON.stringify(foundResult));
+    setSavedFoundMovies(foundResult);
+    setNothingFoundText("Ничего не найдено")
+    setTimeout(() => {setIsLoading(false)}, 1500);
   };
 
   const filterMoviesById = (collection, id) => {
@@ -212,6 +232,9 @@ function App() {
         const movies = filterMoviesById(savedMovies, id);
         setSavedMovies(movies);
         localStorage.setItem("savedMovies", JSON.stringify(movies));
+        const foundMovies = filterMoviesById(savedFoundMovies, id);
+        setSavedFoundMovies(foundMovies);
+        localStorage.setItem("savedFoundMovies", JSON.stringify(foundMovies));
       })
       .catch(err => console.log(err))
   };
@@ -238,20 +261,22 @@ function App() {
           isLoading={isLoading}
           saveMovies={saveMovies}
           deleteSavedMoivies={deleteSavedMoivies}
-          savedMovies={savedMovies} />
+          savedMovies={savedMovies}
+          nothingFoundText={nothingFoundText} />
         <ProtectedRoute exact path="/saved-movies"
           loggedIn={loggedIn}
           component={SavedMovies}
+          movies={savedFoundMovies}
           isSideBarOpened={isSideBarOpened}
-          movies={savedMovies}
           handleSideBarState={handleSideBarState}
           screenWidth={screenWidth}
-          searchMovies={searchMovies}
+          searchMovies={searchSavedMovies}
           handleChangeСheckbox={handleChangeСheckbox}
           checked={checked}
           isLoading={isLoading}
           deleteSavedMoivies={deleteSavedMoivies}
-          savedMovies={savedMovies} />
+          savedMovies={savedMovies}
+          nothingFoundText={nothingFoundText} />
         <ProtectedRoute exact path="/profile"
           loggedIn={loggedIn}
           component={Profile}
