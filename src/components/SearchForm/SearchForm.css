@@ -31,6 +31,7 @@
   border-radius: 40px;
   padding: 0 6px 0 22px;
   box-sizing: border-box;
+  position: relative;
 }
 
 .search__form-label {
@@ -49,6 +50,18 @@
   line-height: 17px;
   color: #8B8B8B;
   outline: none;
+}
+
+.search__form-error {
+  margin: 0;
+  font-weight: normal;
+  font-size: 11px;
+  line-height: 12px;
+  color: #EE3465;
+  position: absolute;
+  bottom: -18px;
+  left: 24px;
+  transition: .3s;
 }
 
 .search__form-input:focus {
@@ -72,6 +85,15 @@
 .search__button:hover {
   cursor: pointer;
   opacity: 0.8;
+}
+
+.search__button_disabled {
+  background: #888888;
+}
+
+.search__button_disabled:hover {
+  cursor: default;
+  opacity: 1;
 }
 
 @media screen and (max-width: 1237px) {

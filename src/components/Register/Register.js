@@ -1,8 +1,9 @@
 import "./Register.css";
 import { Link, useHistory } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import useFormValidation from "../../utils/hooks/useFormWithValidation";
 
-function Register({ handleRegister, waiting, disableButton }) {
+function Register({ handleRegister, waiting, disableButton, isBadRequest }) {
   const history = useHistory()
 
   useEffect(() => {
@@ -16,24 +17,18 @@ function Register({ handleRegister, waiting, disableButton }) {
     }
   }
 
-  const [data, setData] = useState({
+  const { values, errors, isValid, handleChange } = useFormValidation({
     name: "",
     email: "",
     password: ""
-  })
-
-  const handleChange = (e) => {
-    const {name, value} = e.target;
-    setData({
-      ...data,
-      [name]: value
-    })
-  }
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const { name, email, password } = data
-    handleRegister(name, email, password)
+    const { name, email, password } = values
+    if (isValid) {
+      handleRegister(name, email, password)
+    }
   }
 
   return (
@@ -42,51 +37,58 @@ function Register({ handleRegister, waiting, disableButton }) {
         <Link to="/" className="register__logo" />
         <h1 className="register__greeting">Добро пожаловать!</h1>
       </div>
-      <form className="register__form" onSubmit={handleSubmit}>
+      <form className="register__form" onSubmit={handleSubmit} noValidate>
         <div className="register__form-wrapper">
           <label className="register__form-input">Имя
             <input type="text"
               name="name"
               id="name"
-              className="register__form-textfield"
+              className={`register__form-textfield ${errors.name && "register__form-textfield_error"}`}
               placeholder="Введите имя"
               required
+              minLength="2"
+              maxLength="30"
               autoComplete="off"
               onChange={handleChange}
-              value={data.name} />
-            <span className="register__form-error" id="name-error">Что-то пошло не так...</span>
+              value={values.name} />
+            {errors.name && <span className="register__form-error" id="name-error">{errors.name}</span>}
           </label>
           <label className="register__form-input">E-mail
             <input type="email"
               name="email"
               id="email"
-              className="register__form-textfield"
+              className={`register__form-textfield ${errors.email && "register__form-textfield_error"}`}
               placeholder="Введите email"
-              required
               autoComplete="off"
+              required
               onChange={handleChange}
-              value={data.email} />
-            <span className="register__form-error" id="email-error">Что-то пошло не так...</span>
+              value={values.email} />
+            {errors.email && <span className="register__form-error" id="email-error">{errors.email}</span>}
           </label>
           <label className="register__form-input">Пароль
             <input type="password"
               name="password"
               id="password"
-              className="register__form-textfield"
+              className={`register__form-textfield ${errors.password && "register__form-textfield_error"}`}
               placeholder="Введите пароль"
               required
+              minLength="8"
+              maxLength="35"
               autoComplete="off"
               onChange={handleChange}
-              value={data.password} />
-            <span className="register__form-error" id="password-error">Что-то пошло не так...</span>
+              value={values.password} />
+            {errors.password && <span className="register__form-error" id="password-error">{errors.password}</span>}
           </label>
         </div>
         <div className="register__form-wrapper">
           <button
-            className={`register__form-button ${disableButton ? "register__form-button_disabled" : ""}`}
+            className={`register__form-button ${(disableButton || !isValid) ? "register__form-button_disabled" : ""}`}
             type="submit"
-            disabled={disableButton}
-            aria-label={waiting || "Зарегистрироваться"}>{waiting || "Зарегистрироваться"}</button>
+            autoComplete="off"
+            disabled={disableButton || !isValid}
+            aria-label={waiting || "Зарегистрироваться"}>{waiting || "Зарегистрироваться"}
+          </button>
+          {isBadRequest && <span className="register__submit-error">При регистрации произошла ошибка.</span>}
           <p className="register__form-text">Уже зарегистрированы?
             <Link className="register__form-link" to="/signin" aria-label="Войти">Войти</Link>
           </p>

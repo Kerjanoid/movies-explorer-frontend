@@ -98,15 +98,11 @@
   font-size: 10px;
   line-height: 12px;
   color: #EE3465;
-  opacity: 0;
+  opacity: 1;
   position: absolute;
   bottom: 6px;
   left: 0;
   transition: .3s;
-}
-
-.login__error_visible {
-  opacity: 1;
 }
 
 .login__button {
@@ -164,6 +160,7 @@
   justify-content: flex-start;
   align-items: center;
   width: 100%;
+  position: relative;
 }
 
 .login__form-input {
@@ -208,15 +205,12 @@
   font-size: 10px;
   line-height: 12px;
   color: #EE3465;
-  opacity: 0;
+  opacity: 1;
   position: absolute;
-  bottom: 6px;
+  top: 63%;
   left: 0;
   transition: .3s;
-}
-
-.login__form-error_visible {
-  opacity: 1;
+  width: 100%;
 }
 
 .login__form-button {
@@ -267,6 +261,19 @@
 
 .login__form-button_disabled:hover {
   opacity: 1;
+}
+
+.login__submit-error {
+  margin: 0;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color:#EE3465;
+  position: absolute;
+  top: 50%;
+  transition: .3s;
+  width: 100%;
+  text-align: center;
 }
 
 @media screen and (max-width: 450px) {

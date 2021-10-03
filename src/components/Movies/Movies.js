@@ -60,7 +60,8 @@ function Movies({ loggedIn,
           searchMovies={searchMovies}
           handleChangeСheckbox={handleChangeСheckbox}
           checked={checked}
-          isSaved={false} />
+          isSaved={false}
+          isLoading={isLoading} />
         {isLoading ?
           <Preloader /> :
           (movies.length === 0) ?

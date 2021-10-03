@@ -1,8 +1,9 @@
 import "./Login.css";
 import { Link, useHistory } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import useFormValidation from "../../utils/hooks/useFormWithValidation";
 
-function Login({ disableButton, waiting, handleLogin }) {
+function Login({ disableButton, waiting, handleLogin, isBadRequest }) {
   const history = useHistory()
 
   useEffect(() => {
@@ -16,23 +17,17 @@ function Login({ disableButton, waiting, handleLogin }) {
     }
   }
 
-  const [data, setData] = useState({
+  const { values, errors, isValid, handleChange } = useFormValidation({
     email: "",
-    password: "",
-  })
-
-  const handleChange = (e) => {
-    const {name, value} = e.target;
-    setData({
-      ...data,
-      [name]: value
-    })
-  }
+    password: ""
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const { email, password } = data
-    handleLogin(email, password)
+    const { email, password } = values;
+    if (isValid) {
+      handleLogin(email, password);
+    }
   }
 
   return (
@@ -41,39 +36,42 @@ function Login({ disableButton, waiting, handleLogin }) {
         <Link to="/" className="login__logo" />
         <h1 className="login__greeting">Рады видеть!</h1>
       </div>
-      <form className="login__form" onSubmit={handleSubmit}>
+      <form className="login__form" onSubmit={handleSubmit} noValidate>
         <div className="login__form-wrapper">
           <label className="login__form-input">E-mail
             <input type="email"
               name="email"
               id="email"
-              className="login__form-textfield"
+              className={`login__form-textfield  ${errors.email && "login__form-textfield_error"}`}
               placeholder="Введите email"
               required
               autoComplete="off"
               onChange={handleChange}
-              value={data.email}/>
-            <span className="login__form-error" id="email-error">Что-то пошло не так...</span>
+              value={values.email}/>
+            {errors.email && <span className="login__form-error" id="email-error">{errors.email}</span>}
           </label>
           <label className="login__form-input">Пароль
             <input type="password"
               name="password"
               id="password"
-              className="login__form-textfield"
+              className={`login__form-textfield  ${errors.password && "login__form-textfield_error"}`}
               placeholder="Введите пароль"
               required
               autoComplete="off"
+              minLength="8"
+              maxLength="35"
               onChange={handleChange}
-              value={data.password} />
-            <span className="login__form-error" id="password-error">Что-то пошло не так...</span>
+              value={values.password} />
+            {errors.password && <span className="login__form-error" id="password-error">{errors.password}</span>}
           </label>
         </div>
         <div className="login__form-wrapper">
           <button
-            className={`login__form-button ${disableButton ? "login__form-button_disabled" : ""}`}
+            className={`login__form-button ${(disableButton || !isValid) ? "login__form-button_disabled" : ""}`}
             type="submit"
-            disabled={disableButton}
+            disabled={disableButton || !isValid}
             aria-label={waiting || "Войти"}>{waiting || "Войти"}</button>
+          {isBadRequest && <span className="login__submit-error">При попытке входа произошла ошибка.</span>}
           <p className="login__form-text">Ещё не зарегистрированы?
             <Link className="login__form-link" to="/signup" aria-label="Регистрация">Регистрация</Link>
           </p>

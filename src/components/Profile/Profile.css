@@ -53,6 +53,7 @@
   font-weight: 500;
   font-size: 11px;
   line-height: 13px;
+  position: relative;
 }
 
 .profile__input:last-of-type {
@@ -81,7 +82,7 @@
   align-items: center;
 }
 
-.form__button-edit {
+.profile__button-edit {
   margin: 204px 0 0 0;
   font-weight: normal;
   font-size: 13px;
@@ -92,13 +93,14 @@
   border: none;
   padding: 0;
   transition: .4s;
+  position: relative;
 }
 
-.form__button-edit:hover {
+.profile__button-edit:hover {
   opacity: .7;
 }
 
-.form__button-logout {
+.profile__button-logout {
   margin: 16px 0 70px 0;
   font-weight: 500;
   font-size: 13px;
@@ -111,17 +113,59 @@
   transition: .4s;
 }
 
-.form__button-logout:hover {
+.profile__button-logout:hover {
   opacity: .7;
 }
 
-.form__button-edit_disabled {
+.profile__button-edit_disabled {
   color: #888888;
   cursor: default;
 }
 
-.form__button-edit_disabled:hover {
+.profile__button-edit_disabled:hover {
   opacity: 1;
+}
+
+.profile__form-error {
+  margin: 0;
+  font-weight: normal;
+  font-size: 11px;
+  line-height: 12px;
+  color: #EE3465;
+  position: absolute;
+  bottom: 4px;
+  left: 0;
+  transition: .3s;
+}
+
+.profile__form-error_email {
+  bottom: -20px;
+}
+
+.profile__edit-error {
+  margin: 0;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color:#EE3465;
+  position: absolute;
+  bottom: 45px;
+  left: -50%;
+  transition: .3s;
+  width: 200px;
+}
+
+.profile__edit-ok {
+  margin: 0;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color:#dfdfdf;
+  position: absolute;
+  bottom: 45px;
+  left: -50%;
+  transition: .3s;
+  width: 200px;
 }
 
 @media screen and (max-width: 800px) {
@@ -133,11 +177,11 @@
     margin: 89px 0 0 0;
   }
 
-  .form__button-edit {
+  .profile__button-edit {
     margin: 194px 0 0 0;
   }
 
-  .form__button-logout {
+  .profile__button-logout {
     margin: 16px 0 269px 0;
   }
 }
@@ -151,13 +195,13 @@
     margin: 63px 0 0 0;
   }
 
-  .form__button-edit {
+  .profile__button-edit {
     margin: 363px 0 0 0;
     font-size: 12px;
     line-height: 15px;
   }
 
-  .form__button-logout {
+  .profile__button-logout {
     margin: 16px 0 40px 0;
     font-size: 12px;
     line-height: 15px;

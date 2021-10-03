@@ -26,6 +26,8 @@ function App() {
   const [disableButton, setDisableButton] = useState(false);
   const [checked, setChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isVisibleRequest, setIsVisibleRequest] = useState(false);
+  const [isBadRequest, setIsBadRequest] = useState(false);
   const [nothingFoundText, setNothingFoundText] = useState("");
   const history = useHistory();
 
@@ -86,8 +88,9 @@ function App() {
   };
 
   const handleRegister = (name, email, password) => {
-    setWaiting("Регистрация...")
-    setDisableButton(true)
+    setWaiting("Регистрация...");
+    setDisableButton(true);
+    setIsBadRequest(false);
     MainApi.register(name, email, password)
       .then(res => {
         if (res) {
@@ -96,7 +99,8 @@ function App() {
         }, 500)}
         })
       .catch(err => {
-        console.log(err)})
+        console.log(err);
+        setIsBadRequest(true);})
       .finally(() => {
         setWaiting(null);
         setDisableButton(false);
@@ -104,8 +108,9 @@ function App() {
   };
 
   const handleLogin = (email, password) => {
-    setWaiting("Вход...")
-    setDisableButton(true)
+    setWaiting("Вход...");
+    setDisableButton(true);
+    setIsBadRequest(false);
     MainApi.login(email, password)
       .then(res => {
         if (res.token) {
@@ -114,11 +119,12 @@ function App() {
           history.push("/movies");
         }
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        console.log(err);
+        setIsBadRequest(true);})
       .finally(() => {
         setWaiting(null);
-        setDisableButton(false);
-      })
+        setDisableButton(false);})
   };
 
   const handleSignOut = () => {
@@ -138,12 +144,16 @@ function App() {
     MainApi.editProfile(name, email)
       .then((data) => {
         setCurrentUser(data);
+        setIsVisibleRequest(true);
+        setIsBadRequest(false);
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        console.log(err);
+        setIsVisibleRequest(true);
+        setIsBadRequest(true);})
       .finally(() => {
         setWaiting(null);
-        setDisableButton(false);
-      })
+        setDisableButton(false);})
   };
 
   const handleSideBarState = () => {
@@ -180,8 +190,8 @@ function App() {
             localStorage.setItem("foundMovies", JSON.stringify(foundResult));
           }
         })
-        .catch(err => {console.log(err)
-        setNothingFoundText("Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз")})
+        .catch(err => {console.log(err);
+        setNothingFoundText("Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз.")})
       MainApi.getMovies()
       .then(moviesData => {
         if (movies.length === 0) {
@@ -286,20 +296,25 @@ function App() {
           handleUpdateUser={handleUpdateUser}
           waiting={waiting}
           disableButton={disableButton}
-          handleSignOut={handleSignOut} />
+          currentUser={currentUser}
+          handleSignOut={handleSignOut}
+          isBadRequest={isBadRequest}
+          isVisibleRequest={isVisibleRequest} />
         <Route exact path="/signup">
           <Register
             loggedIn={loggedIn}
             handleRegister={handleRegister}
             waiting={waiting}
-            disableButton={disableButton} />
+            disableButton={disableButton}
+            isBadRequest={isBadRequest} />
         </Route>
         <Route exact path="/signin">
           <Login
             loggedIn={loggedIn}
             handleLogin={handleLogin}
             waiting={waiting}
-            disableButton={disableButton} />
+            disableButton={disableButton}
+            isBadRequest={isBadRequest} />
         </Route>
         <Route path="*">
           <NotFound />

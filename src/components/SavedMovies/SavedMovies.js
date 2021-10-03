@@ -33,7 +33,8 @@ function SavedMovies({
           searchMovies={searchMovies}
           handleChangeСheckbox={handleChangeСheckbox}
           checked={checked}
-          isSaved={true} />
+          isSaved={true}
+          isLoading={isLoading} />
         {isLoading ?
           <Preloader /> :
           (movies.length === 0) ?

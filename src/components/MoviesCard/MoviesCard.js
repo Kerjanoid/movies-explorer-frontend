@@ -1,12 +1,10 @@
 import './MoviesCard.css';
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { CurrentUserContext } from "../../contexts/CurrenUserContext";
 
 function MoviesCard({ movie, saveMovies, deleteSavedMoivies, savedMovies, isSaved }) {
   const { pathname } = useLocation();
   const [isLiked, setIsLiked] = useState(false);
-  const currentUser = useContext(CurrentUserContext);
 
   useEffect(() => {
     checkIsSaved()
