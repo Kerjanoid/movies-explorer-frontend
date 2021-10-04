@@ -80,6 +80,7 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  position: relative;
 }
 
 .profile__button-edit {
@@ -139,7 +140,7 @@
 }
 
 .profile__form-error_email {
-  bottom: -20px;
+  top: 70%;
 }
 
 .profile__edit-error {
@@ -149,8 +150,7 @@
   line-height: 16px;
   color:#EE3465;
   position: absolute;
-  bottom: 45px;
-  left: -50%;
+  top: 25%;
   transition: .3s;
   width: 200px;
 }
@@ -162,8 +162,7 @@
   line-height: 16px;
   color:#dfdfdf;
   position: absolute;
-  bottom: 45px;
-  left: -50%;
+  top: 25%;
   transition: .3s;
   width: 200px;
 }

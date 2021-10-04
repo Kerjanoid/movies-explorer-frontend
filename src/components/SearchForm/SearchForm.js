@@ -32,7 +32,8 @@ function SearchForm({ searchMovies, handleChangeСheckbox, checked, isLoading })
               autoComplete="off"
               required
               value={values.search}
-              onChange={handleChange} />
+              onChange={handleChange}
+              readOnly={isLoading} />
           </label>
           <span className="search__form-error" id="search-error">{isValid ? "" : `${errorText}`}</span>
           <input className={`search__button ${(isValid && !isLoading) ? "" : "search__button_disabled"}`}

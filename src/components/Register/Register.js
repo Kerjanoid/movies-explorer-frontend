@@ -50,7 +50,8 @@ function Register({ handleRegister, waiting, disableButton, isBadRequest }) {
               maxLength="30"
               autoComplete="off"
               onChange={handleChange}
-              value={values.name} />
+              value={values.name}
+              readOnly={waiting} />
             {errors.name && <span className="register__form-error" id="name-error">{errors.name}</span>}
           </label>
           <label className="register__form-input">E-mail
@@ -62,7 +63,9 @@ function Register({ handleRegister, waiting, disableButton, isBadRequest }) {
               autoComplete="off"
               required
               onChange={handleChange}
-              value={values.email} />
+              value={values.email}
+              readOnly={waiting}
+              pattern="[^@\s]+@[^@\s]+\.[^@\s]+" />
             {errors.email && <span className="register__form-error" id="email-error">{errors.email}</span>}
           </label>
           <label className="register__form-input">Пароль
@@ -76,7 +79,8 @@ function Register({ handleRegister, waiting, disableButton, isBadRequest }) {
               maxLength="35"
               autoComplete="off"
               onChange={handleChange}
-              value={values.password} />
+              value={values.password}
+              readOnly={waiting} />
             {errors.password && <span className="register__form-error" id="password-error">{errors.password}</span>}
           </label>
         </div>

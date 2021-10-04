@@ -61,7 +61,8 @@ function Profile({
                   autoComplete="off"
                   defaultValue={currentUser.name}
                   ref={nameRef}
-                  onChange={handleChange} />
+                  onChange={handleChange}
+                  readOnly={waiting} />
                   {errors.name && <span className="profile__form-error" id="name-error">{errors.name}</span>}
               </label>
               <label className="profile__input">E-mail
@@ -74,7 +75,9 @@ function Profile({
                   autoComplete="off"
                   defaultValue={currentUser.email}
                   ref={emailRef}
-                  onChange={handleChange} />
+                  onChange={handleChange}
+                  readOnly={waiting}
+                  pattern="[^@\s]+@[^@\s]+\.[^@\s]+" />
                   {errors.email && <span className="profile__form-error profile__form-error_email" id="email-error">{errors.email}</span>}
               </label>
             </div>
@@ -82,11 +85,11 @@ function Profile({
             <button className={`profile__button-edit ${(disableButton || isSameUserData || !isValid) ? "profile__button-edit_disabled" : ""}`}
               type="submit"
               disabled={disableButton || isSameUserData || !isValid}>{waiting || "Редактировать"}
-              {isVisibleRequest &&
+            </button>
+            {isVisibleRequest &&
                 (isBadRequest ?
                   <span className="profile__edit-error">При обновлении профиля произошла ошибка</span>:
                   <span className="profile__edit-ok">Профиль успешно обновлен</span>)}
-            </button>
             <button className="profile__button-logout" type="button" onClick={handleSignOut}>Выйти из аккаунта</button>
           </div>
           </form>

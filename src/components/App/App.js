@@ -225,9 +225,9 @@ function App() {
   const searchSavedMovies = (searchText) => {
     const initialSavedMovies = JSON.parse(localStorage.getItem("savedMovies"))
     setIsLoading(true)
-    const foundResult = searchShot(initialSavedMovies, searchText)
+    if (initialSavedMovies) {const foundResult = searchShot(initialSavedMovies, searchText)
     localStorage.setItem("savedFoundMovies", JSON.stringify(foundResult));
-    setSavedFoundMovies(foundResult);
+    setSavedFoundMovies(foundResult);}
     setNothingFoundText("Ничего не найдено")
     setTimeout(() => {setIsLoading(false)}, 1500);
   };

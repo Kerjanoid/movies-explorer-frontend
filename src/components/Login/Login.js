@@ -47,7 +47,9 @@ function Login({ disableButton, waiting, handleLogin, isBadRequest }) {
               required
               autoComplete="off"
               onChange={handleChange}
-              value={values.email}/>
+              value={values.email}
+              readOnly={waiting}
+              pattern="[^@\s]+@[^@\s]+\.[^@\s]+" />
             {errors.email && <span className="login__form-error" id="email-error">{errors.email}</span>}
           </label>
           <label className="login__form-input">Пароль
@@ -61,7 +63,8 @@ function Login({ disableButton, waiting, handleLogin, isBadRequest }) {
               minLength="8"
               maxLength="35"
               onChange={handleChange}
-              value={values.password} />
+              value={values.password}
+              readOnly={waiting} />
             {errors.password && <span className="login__form-error" id="password-error">{errors.password}</span>}
           </label>
         </div>
