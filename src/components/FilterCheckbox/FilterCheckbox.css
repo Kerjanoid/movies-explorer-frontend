@@ -1,0 +1,53 @@
+.checkbox {
+  display: flex;
+  margin: 41px 0 0 0;
+}
+
+.checkbox__form-label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.checkbox__input {
+  display: flex;
+}
+
+.checkbox__input_hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+.checkbox__input_visible {
+  cursor: pointer;
+  display: inline-block;
+  vertical-align: middle;
+  width: 36px;
+  height: 20px;
+  transition: .3s ease;
+}
+
+.checkbox__input_hidden:checked + .checkbox__input_visible {
+  background: url("../../images/smalltumb.png");
+}
+
+.checkbox__input_hidden + .checkbox__input_visible {
+  background: url("../../images/smalltumboff2.png");
+}
+
+.checkbox__form-text {
+  margin: 0 0 0 12px;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 18px;
+  transition: .4s;
+}
+
+@media screen and (max-width: 577px) {
+  .checkbox__form-text {
+    font-size: 11px;
+  }
+}

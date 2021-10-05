@@ -1,0 +1,162 @@
+.header {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1280px;
+  height: 74px;
+  padding: 0 70px;
+  transition: .4s;
+}
+
+.header__logo {
+  display: flex;
+  width: 38px;
+  height: 38px;
+  background-image: url(../../images/logo.svg);
+}
+
+.header__menu {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-left: 44px;
+  width: calc(100% - 82px);
+}
+
+.header__navigation {
+  display: flex;
+  width: 100%;
+}
+
+.header__links {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+}
+
+.header__li {
+  display: flex;
+  margin: 0 30px 0 0;
+  transition: .4s;
+}
+
+.header__li:last-of-type {
+  margin-right: 0;
+}
+
+.header__li_logged-in {
+  margin: 0;
+}
+
+.header__li_logged-in:first-of-type {
+  margin: 0 16px 0 0;
+}
+
+.header__link {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: #fff;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  transition: linear .3s;
+}
+
+.header__link:hover {
+  opacity: .7;
+}
+
+.header__link_logged-in {
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.header__link_active {
+  font-weight: 500;
+}
+
+.header__link_entry-button {
+  width: 76px;
+  height: 32px;
+  background-color: #3ddc84;
+  color: #000;
+  border-radius: 3px;
+  transition: linear .3s;
+}
+
+.header__link_entry-button:hover {
+  opacity: .8;
+}
+
+.font-weight-400 {
+  font-weight: 400;
+}
+
+.header__link_account-button {
+  width: 100px;
+  height: 32px;
+  background: #313131;
+  border-radius: 20px;
+  font-size: 14px;
+  line-height: 16px;
+  transition: linear .3s;
+}
+
+.header__link_account-button:hover {
+  opacity: .8;
+}
+
+.header__li_account-button {
+  margin-left: auto;
+  right: 0;
+}
+
+.header__sidebar-button {
+  margin: 0;
+  padding: 0;
+  background-color: inherit;
+  border: none;
+  background-image: url(../../images/sidebar-button.svg);
+  background-size: contain;
+  width: 44px;
+  height: 44px;
+  transition: .4s;
+  cursor: pointer;
+}
+
+.header__sidebar-button:hover {
+  opacity: .8;
+}
+
+@media screen and (max-width: 647px) {
+  .header {
+    padding: 0 14px;
+  }
+
+  .header__link {
+    font-size: 10px;
+  }
+
+  .header__link_entry-button {
+    width: 54px;
+    height: 26px;
+  }
+
+  .header__li {
+    margin: 0 14px 0 0;
+  }
+
+  .header__sidebar-button {
+    width: 40px;
+    height: 43px;
+  }
+}
