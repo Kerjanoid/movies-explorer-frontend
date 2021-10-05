@@ -35,8 +35,7 @@ function SideBar({ isSideBarOpened, handleSideBarState }) {
             <li className="sidebar__li sidebar__li_account-button">
               <NavLink
                 to="/profile"
-                className="sidebar__link sidebar__link_account-button"
-                onClick={handleSideBarState}>
+                className="sidebar__link sidebar__link_account-button">
                 Аккаунт
               </NavLink>
             </li>

@@ -1,4 +1,4 @@
-# Фронтенд (верстка на JSX) дипломного проекта Яндекс.Практикум.
+# Фронтенд дипломного проекта Яндекс.Практикум.
 
 ### Сервис, в котором пользователь может найти фильмы по запросу и сохранить в личном кабинете (облегченный аналог Кинопоиска).
 
@@ -10,8 +10,8 @@
 5. Хуки
 6. БЭМ
 
-### Планируемые доработки проекта:
-1) Запрограммировать функциональность приложения
-2) Подключить к бэкенду, разработанному ранее
+### :link: Домен сервера (фронтенд) - [https://kerjanoid-movies.nomoredomains.club](https://kerjanoid-movies.nomoredomains.club)
+### :link: Домен сервера (бэкенд) - [https://api.kerjanoid-movies.nomoredomains.rocks](https://api.kerjanoid-movies.nomoredomains.rocks)
+### :link: GitHub репозиторий (бэкенд) - [https://github.com/Kerjanoid/movies-explorer-api](https://github.com/Kerjanoid/movies-explorer-api)
 
-### Для запуска проекта использовать команду `npm start`
+

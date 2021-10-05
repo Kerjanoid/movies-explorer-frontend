@@ -4,18 +4,49 @@ import SearchForm from "../SearchForm/SearchForm"
 import MoviesCardList from "../MoviesCardList/MoviesCardList"
 import Footer from "../Footer/Footer";
 import SideBar from "../SideBar/SideBar";
+import Preloader from "../Preloader/Preloader";
+import NothingFound from "../NothingFound/NothingFound";
 
-function SavedMovies({ loggedIn, isSideBarOpened, handleSideBarState, isLiked, handleLikeClick }) {
+function SavedMovies({
+  loggedIn,
+  isSideBarOpened,
+  handleSideBarState,
+  screenWidth,
+  handleLikeClick,
+  searchMovies,
+  handleChangeСheckbox,
+  checked,
+  isLoading,
+  deleteSavedMoivies,
+  savedMovies,
+  movies,
+  nothingFoundText }) {
+
   return (
     <>
       <Header loggedIn={loggedIn}
         isSideBarOpened={isSideBarOpened}
-        handleSideBarState={handleSideBarState} />
+        handleSideBarState={handleSideBarState}
+        screenWidth={screenWidth} />
       <main className="content">
-        <SearchForm />
-        {/* <Preloader /> */}
-      {/* Preloader будет вставляться вместо <MoviesCardList/> при выполнении поиска */}
-        <MoviesCardList />
+        <SearchForm
+          searchMovies={searchMovies}
+          handleChangeСheckbox={handleChangeСheckbox}
+          checked={checked}
+          isSaved={true}
+          isLoading={isLoading} />
+        {isLoading ?
+          <Preloader /> :
+          (movies.length === 0) ?
+            <NothingFound
+              nothingFoundText={nothingFoundText} /> :
+            <MoviesCardList
+              handleLikeClick={handleLikeClick}
+              deleteSavedMoivies={deleteSavedMoivies}
+              movies={movies}
+              moviesVisibleCount={movies}
+              savedMovies={savedMovies}
+              isSaved={true} />}
       </main>
       <Footer />
       <SideBar isSideBarOpened={isSideBarOpened}
